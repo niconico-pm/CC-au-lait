@@ -9,19 +9,19 @@
 (iv)データベース設計
 
 (i)
-a.parse関数(htmlstr to dict)
-b.regdatabase関数(dict)
+a.parse関数(htmlstr to dict or list)
+b.regdatabase関数(dict or list)
 c.上を用いたhtmlページ
 
 (ii)
-querystring にユーザー識別文字列を入れとく
+ユーザー識別文字列を入れとくorCookie
 a.キー登録画面
-b.
+b.認証
 
 (iii)
-sqlからはselectぐらいにしとく
-集計関数
-表示のhtml
+sqlからはselectぐらいにしとくpythonで集計
+a.集計関数
+b.表示のhtml
 
 (iv)
 a.ユーザー識別関連
@@ -29,16 +29,20 @@ b.スコアデータ関連
 
 4.
 山口:(i)(iii)
-浜中:(ii)(iii)
+浜中:(ii)(iii)(iv)
 
 5.
 
 11/29 見通しを立てる↓埋める,仕様確定
-12/3 [山口] (i)a
-12/3 [浜中] (iv)a
-12/6 
-12/10
-12/13 [山口] (ii)b
-12/17
+12/3  [山口] (i)a 30% 
+      [浜中] (iv)a
+12/6  [山口] (i)a 60%
+      [浜中] (iv)b
+12/10 [山口] (i)a 100% (i)b 50%
+      [浜中] (ii)a
+12/13 [山口] (i)b 100%
+      [浜中] (ii)b
+12/17 [山口] (iii)b (i)c
+      [浜中] (iii)a
 12/20 結合テスト
 12/24 完成
