@@ -6,7 +6,64 @@ from hashlib import md5
 correct_username = "admin"
 correct_password = "pass"
 
-htmllogin = """
+def find_password(username):
+    if username == correct_username:
+        return correct_password
+    else:
+        return None
+
+def hash_password(password):
+    return md5(password).hexdigest()
+
+def find_passhash(username):
+    password = find_password(username)
+    if password != None:
+        return hash_password(password)
+    return None
+
+def validate(username, passhash):
+    password = find_password(username)
+    if password != None:
+        return (passhash == hash_password(password))
+    else:
+        return False
+
+def read_cookie(http_cookie):
+    ck = SimpleCookie(http_cookie)
+    if 'username' in ck and 'passhash' in ck:
+        return (ck['username'].value, ck['passhash'].value)
+    else:
+        return None
+
+def validate_cookie(environ):
+    if 'HTTP_COOKIE' in environ:
+        http_cookie = environ['HTTP_COOKIE']
+        tup = read_cookie(http_cookie)
+        if tup != None:
+            return validate(*tup)
+    return False
+
+def make_cookie_outputlist(username, passhash, expires):
+    ckname_user = 'username'
+    ckname_hash = 'passhash'
+    
+    ck = SimpleCookie()
+    ck[ckname_user] = username
+    ck[ckname_hash] = passhash
+    if expires != None:
+        ck[ckname_user]['expires'] = expires
+        ck[ckname_hash]['expires'] = expires
+    outlist = [
+        ('Set-Cookie', ck[ckname_user].OutputString()),
+        ('Set-Cookie', ck[ckname_hash].OutputString()),
+    ]
+    return outlist
+
+def make_delete_cookie():
+    return make_cookie_outputlist("deleted", "deleted", 0);
+
+def application(environ, start_response):
+    htmllogin = """\
 <html>
 <head>
 <title>Login Page</title>
@@ -24,7 +81,7 @@ htmllogin = """
 </body>
 </html>
 """
-htmllogined = """
+    htmllogined = """\
 <html><head>
 <title>Login Succeed</title>
 </head>
@@ -38,49 +95,37 @@ htmllogined = """
 </body>
 </html>
 """
-
-def application(environ, start_response):
-    global htmllogin
-    global htmllogined
-
     status = '200 OK'
     response_headers = [('Content-type', 'text/html')]
     html = "init"
 
     method = environ['REQUEST_METHOD']
-    post=parse_qs(environ['wsgi.input'].read())
     if method == 'POST':
-        if 'logout' in post:
-            ck = SimpleCookie()
-            ck['username'] = "deleted"
-            ck['username']['expires'] = 0
-            ck['passhash'] = "deleted"
-            ck['passhash']['expires'] = 0
-            response_headers.append(('Set-Cookie', ck['username'].OutputString()))
-            response_headers.append(('Set-Cookie', ck['passhash'].OutputString()))
-            html = htmllogin % "Logouted.<br>"
-        elif 'username' in post and 'password' in post:
+        post = parse_qs(environ['wsgi.input'].read())
+        if 'username' in post and 'password' in post:
             username = post['username'][0]
             password = post['password'][0]
-            if username == correct_username and password == correct_password:
-                ck = SimpleCookie()
-                ck['username'] = username
-                ck['passhash'] = md5(password).hexdigest()
-                response_headers.append(('Set-Cookie', ck['username'].OutputString()))
-                response_headers.append(('Set-Cookie', ck['passhash'].OutputString()))
+            passhash = hash_password(password)
+            if validate(username, passhash):
+                response_headers += make_cookie_outputlist(username, passhash, None)
                 html = htmllogined % username
             else:
-                html = htmllogin % "Invalid Username or Passowrd<br>"
+                html = htmllogin % ("Invalid Username or Passowrd" + "<br>")
+        elif 'logout' in post:
+            response_headers += make_delete_cookie()
+            html = htmllogin % "Logouted.<br>"
         else:
             html = htmllogin % "Enter Username or Password<br>"
     elif 'HTTP_COOKIE' in environ:
-        ck = SimpleCookie(environ['HTTP_COOKIE'])
-        username = ck['username'].value
-        passhash = ck['passhash'].value
-        if username == correct_username and passhash == md5(correct_password).hexdigest():
-            html = htmllogined % username
+        tup = read_cookie(environ['HTTP_COOKIE'])
+        if tup != None:
+            username, passhash = tup
+            if validate(username, passhash):
+                html = htmllogined % username
+            else:
+                html = htmllogin % ("Authrization failed (" + username + ", " + passhash + ")<br>")
         else:
-            html = htmllogin % ("Invalid Cookie<br>" + username + ", " + passhash)
+            html = htmllogin % ("Invalid Cookie<br>")
     else:
         html = htmllogin % ""
 
