@@ -1,30 +1,29 @@
 # -*- coding: utf-8 -*-
 from cgi import parse_qs
 from Cookie import SimpleCookie
-from hashlib import md5
+from hashlib import sha512
 
 correct_username = "admin"
-correct_password = "pass"
+password_salt = "salt"
+correct_passhash = sha512("pass" + password_salt).hexdigest()
 
-def find_password(username):
+def hash_password(password, salt):
+    return sha512(password + salt).hexdigest()
+
+def find_salt(username):
     if username == correct_username:
-        return correct_password
-    else:
-        return None
-
-def hash_password(password):
-    return md5(password).hexdigest()
+        return password_salt
+    return None
 
 def find_passhash(username):
-    password = find_password(username)
-    if password != None:
-        return hash_password(password)
+    if username == correct_username:
+        return correct_passhash
     return None
 
 def validate(username, passhash):
-    password = find_password(username)
-    if password != None:
-        return (passhash == hash_password(password))
+    cor_passhash = find_passhash(username)
+    if cor_passhash != None:
+        return passhash == cor_passhash
     else:
         return False
 
@@ -105,12 +104,14 @@ def application(environ, start_response):
         if 'username' in post and 'password' in post:
             username = post['username'][0]
             password = post['password'][0]
-            passhash = hash_password(password)
-            if validate(username, passhash):
-                response_headers += make_cookie_outputlist(username, passhash, None)
-                html = htmllogined % username
+            salt = find_salt(username)
+            if salt != None:
+                passhash = hash_password(password, salt)
+                if validate(username, passhash):
+                    response_headers += make_cookie_outputlist(username, passhash, None)
+                    html = htmllogined % username
             else:
-                html = htmllogin % ("Invalid Username or Passowrd" + "<br>")
+                html = htmllogin % ("Invalid Username or Password" + "<br>")
         elif 'logout' in post:
             response_headers += make_delete_cookie()
             html = htmllogin % "Logouted.<br>"
