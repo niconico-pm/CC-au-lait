@@ -1,0 +1,363 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="ja">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" type="text/css" href="lecture.css">
+<style type="text/css">
+<!--
+col.date	{ width:25% }
+col.summary	{ width:15% }
+col.test	{ width:15% }
+col.details	{ width:15% }
+-->
+</style>
+<title>数理論理学</title>
+</head>
+
+<body>
+
+<div class="department" align="right">
+三重大学 工学部 情報工学科
+<a href="file:///home/toshi/www/personal/lectures/mathlogic/material.html">☆</a>
+</div>
+
+<div class="title">
+<hr><!--============================================================-->
+<h1 align="center">数理論理学</h1>
+<!-- -->
+<div class="address">http://www.cs.info.mie-u.ac.jp/~toshi/lectures/mathlogic/</div>
+<!-- -->
+<hr><!--============================================================-->
+</div>
+
+<h2>●お知らせ</h2>
+
+<div class="indent">
+
+<!--
+<span class="new">
+</span>
+-->
+
+<ul>
+ <li>「証明法」の演習問題の解答を載せました．('14.11.20)
+     <!--span class="new"> [新] </span-->
+ </li>
+ <li>「解説資料集２」を載せました．('14.11.21)
+ </li>
+ <li>「文章から論理式への翻訳」の解答を載せました．('14.11.8)
+ </li>
+</ul>
+<p>
+<a href="announcement.html">以前のお知らせ</a>
+</p>
+</div>
+
+<h2>●目標</h2>
+
+<div class="indent">
+数理論理学の基礎と応用について，次の観点から理解を深める．
+<ul>
+ <li>命題論理や述語論理の 構文・証明・意味・導出原理</li>
+ <li>論理プログラミング や 計算機による定理証明技術</li>
+</ul>
+<p><a href="topics.html">学習事項</a>
+   <span class="em"> ← 予習の範囲も掲載 </span>
+</p>
+</div>
+
+<h2>●日程</h2>
+
+<div class="indent">
+<table border="2" summary="各回の実施日と内容">
+ <col>
+ <col class="date">
+ <col>
+ <col class="test">
+ <col class="summary">
+ <tr>
+  <!-- 回     --><th>回</th>
+  <!-- 実施日 --><th>実施日</th>
+  <!-- 内容   --><th>内容</th>
+  <!-- 要点   --><th>要点</th>
+  <!-- 確認   --><th>確認と解答</th>
+ </tr>
+ <tr>
+  <!-- 回     --><td>1</td>
+  <!-- 実施日 --><td>'14.10.1</td>
+  <!-- 内容   --><td class="tbl3">数理論理学の基礎</td>
+  <!-- 要点   --><td><a href="summary01.html">要点１</a>
+ 		 </td>
+  <!-- 確認   --><td><a href="sol01.html">確認１</a>
+ 		 </td>
+ </tr>
+ <tr>
+  <!-- 回     --><td>2</td>
+  <!-- 実施日 --><td>'14.10.8</td>
+  <!-- 内容   --><td class="tbl2">論理式と証明法 1</td>
+  <!-- 要点   --><td><a href="summary02.html">要点２</a>
+ 		 </td>
+  <!-- 確認   --><td><a href="sol02.html">確認２</a>
+ 		 </td>
+ </tr>
+ <tr>
+  <!-- 回     --><td>-</td>
+  <!-- 実施日 --><td>'14.10.15</td>
+  <!-- 内容   --><td>（月曜の授業）</td>
+  <!-- 要点   --><td>&nbsp;</td>
+  <!-- 確認   --><td>&nbsp;</td>
+ </tr>
+ <tr>
+  <!-- 回     --><td>3</td>
+  <!-- 実施日 --><td>'14.10.22</td>
+  <!-- 内容   --><td class="tbl2">論理式と証明法 2</td>
+  <!-- 要点   --><td><a href="summary03.html">要点３</a>
+ 		 </td>
+  <!-- 確認   --><td><a href="sol03.html">確認３</a>
+ 		 </td>
+ </tr>
+ <tr>
+  <!-- 回     --><td>4</td>
+  <!-- 実施日 --><td>'14.10.29</td>
+  <!-- 内容   --><td class="tbl2">論理式と証明法 3</td>
+  <!-- 要点   --><td><a href="summary04.html">要点４</a>
+ 		 </td>
+  <!-- 確認   --><td><a href="sol04.html">確認４</a>
+ 		 </td>
+ </tr>
+ <tr>
+  <!-- 回     --><td>5</td>
+  <!-- 実施日 --><td>'14.11.5</td>
+  <!-- 内容   --><td class="tbl2">論理式と証明法 4</td>
+  <!-- 要点   --><td><a href="summary05.html">要点５</a>
+ 		 </td>
+  <!-- 確認   --><td><a href="sol05.html">確認５</a>
+ 		 </td>
+ </tr>
+ <tr>
+  <!-- 回     --><td>6</td>
+  <!-- 実施日 --><td>'14.11.12</td>
+  <!-- 内容   --><td class="tbl2">論理式と証明法 5</td>
+  <!-- 要点   --><td><a href="summary06.html">要点６</a>
+ 		 </td>
+  <!-- 確認   --><td><a href="sol06.html">確認６</a>
+ 		 </td>
+ </tr>
+ <tr>
+  <!-- 回     --><td>7</td>
+  <!-- 実施日 --><td>'14.11.19</td>
+  <!-- 内容   --><td class="tbl2">論理式と証明法 6</td>
+  <!-- 要点   --><td><a href="summary07.html">要点７</a>
+ 		 </td>
+  <!-- 確認   --><td><a href="sol07.html">確認７</a>
+ 		 </td>
+ </tr>
+ <tr>
+  <!-- 回     --><td>8</td>
+  <!-- 実施日 --><td>'14.11.26</td>
+  <!-- 内容   --><td class="tbl3">自然演繹 1</td>
+  <!-- 要点   --><td><a href="summary08.html">要点８</a>
+ 		 </td>
+  <!-- 確認   --><td><a href="sol08.html">確認８</a>
+                     <span class="new"> [新] </span>
+ 		 </td>
+ </tr>
+ <tr>
+  <!-- 回     --><td>9</td>
+  <!-- 実施日 --><td>'14.12.3</td>
+  <!-- 内容   --><td class="tbl3">自然演繹 2</td>
+  <!-- 要点   --><td><a href="summary09.html">要点９</a>
+ 		 </td>
+  <!-- 確認   --><td><a href="test09.html">確認９</a>
+ 		 </td>
+ </tr>
+ <tr>
+  <!-- 回     --><td>10</td>
+  <!-- 実施日 --><td>'14.12.10</td>
+  <!-- 内容   --><td class="tbl3">自然演繹 3</td>
+  <!-- 要点   --><td><a href="summary10.html">要点10</a>
+ 		 </td>
+  <!-- 確認   --><td><a href="test10.html">確認10</a>
+ 		 </td>
+ </tr>
+ <tr>
+  <!-- 回     --><td>11</td>
+  <!-- 実施日 --><td>'14.12.17</td>
+  <!-- 内容   --><td class="tbl3">自然演繹 4</td>
+  <!-- 要点   --><td><a href="summary11.html">要点11</a>
+ 		 </td>
+  <!-- 確認   --><td><a href="test11.html">確認11</a>
+ 		 </td>
+ </tr>
+ <tr>
+  <!-- 回     --><td>-</td>
+  <!-- 実施日 --><td>'14.12.23-'15.1.4</td>
+  <!-- 内容   --><td>（冬休み）</td>
+  <!-- 要点   --><td>&nbsp;</td>
+  <!-- 確認   --><td>&nbsp;</td>
+ </tr>
+ <tr>
+  <!-- 回     --><td>12</td>
+  <!-- 実施日 --><td>'15.1.7</td>
+  <!-- 内容   --><td class="tbl2">述語論理の意味論 1</td>
+  <!-- 要点   --><td><a href="summary12.html">要点12</a>
+ 		 </td>
+  <!-- 確認   --><td><a href="test12.html">確認12</a>
+ 		 </td>
+ </tr>
+ <tr>
+  <!-- 回     --><td>13</td>
+  <!-- 実施日 --><td>'15.1.14</td>
+  <!-- 内容   --><td class="tbl2">述語論理の意味論 2</td>
+  <!-- 要点   --><td><a href="summary13.html">要点13</a>
+ 		 </td>
+  <!-- 確認   --><td><a href="test13.html">確認13</a>
+ 		 </td>
+ </tr>
+ <tr>
+  <!-- 回     --><td>14</td>
+  <!-- 実施日 --><td>'15.1.21</td>
+  <!-- 内容   --><td class="tbl3">導出原理 1</td>
+  <!-- 要点   --><td><a href="summary14.html">要点14</a>
+ 		 </td>
+  <!-- 確認   --><td><a href="test14.html">確認14</a>
+ 		 </td>
+ </tr>
+ <tr>
+  <!-- 回     --><td>15</td>
+  <!-- 実施日 --><td>'15.1.28</td>
+  <!-- 内容   --><td class="tbl3">導出原理 2，数理論理学の応用</td>
+  <!-- 要点   --><td><a href="summary15.html">要点15</a>
+ 		 </td>
+  <!-- 確認   --><td><a href="test15.html">確認15</a>
+ 		 </td>
+ </tr>
+ <tr>
+  <!-- 回     --><td>16</td>
+  <!-- 実施日 --><td>'15.2.4</td>
+  <!-- 内容   --><td class="tbl1">期末試験</td>
+  <!-- 要点   --><td>&nbsp;</td>
+  <!-- 確認   --><td>&nbsp;</td>
+ </tr>
+</table>
+</div>
+
+<h2>●教材</h2>
+
+<div class="indent">
+<dl>
+ <dt>資料集</dt>
+ <dd><ul>
+      <li><a href="mathlogic1.pdf">解説資料集 1</a> (第 1〜7 回)
+	  </li>
+      <li><a href="mathlogic2.pdf">解説資料集 2</a> (第 8〜15 回)
+	  <!--span class="new"> [新] </span-->
+	  </li>
+      <li><a href="http://syllabus.mie-u.ac.jp/?action=display&amp;id=6081" target="_brank">
+	   シラバス</a></li>
+     </ul>
+ <dt>問題集</dt>
+ <dd><ul>
+      <li><a href="tests.pdf">確認問題集</a> (第 1〜15 回)
+	  </li>
+      <li><a href="examples.pdf">例題・演習</a> (第 1〜15 回)
+<!--
+	  と
+	  <a href="examples-sol.pdf">解答</a>
+-->
+	  </li>
+      <li><a href="formulae-sol.pdf">「文章から論理式への翻訳」の解答</a>
+	  </li>
+      <li><a href="proofs-sol.pdf">「証明法」の解答</a>
+	  <!--span class="new"> [新] </span-->
+	  </li>
+<!--
+      <li><a href="nd-sol.pdf">解答「自然演繹の証明」の解答</a>
+	  </li>
+      <li><a href="interpretation-sol.pdf">「論理式の意味付けと恒真性」の解答</a>
+	  </li>
+-->
+<!--
+      <li><a href="challenge-sol.html">チャレンジ問題</a>
+	  </li>
+-->
+     </ul>
+ <dt>教科書</dt>
+ <dd><ul>
+      <li>『情報科学における論理』，小野寛晰，日本評論社，1994．</li>
+     </ul>
+ <dt>参考書</dt>
+ <dd><ul>
+      <li>『数学は言葉』，新井紀子，東京図書，2009．</li>
+<!--
+      <li>『証明の楽しみ 基礎編』，G.チャートランド，A.D.ポリメニ，P.チャン 著，鈴木治郎 訳，ピアソン・エデュケーション，2004．</li>
+-->
+      <li>『記号論理入門 [新装版]』，前原昭二，日本評論社，2005．</li>
+      <li>『数理論理学』，鹿島亮，朝倉書店，2009．</li>
+<!--
+      <li>『数理論理学』，林晋，コロナ社，1989．</li>
+-->
+     </ul>
+</dl>
+</div>
+
+<h2>●評価</h2>
+
+<div class="indent">
+<p>
+期末試験(100点)の得点が60点以上なら合格．チャレンジ問題による加点あり．
+</p>
+<p>
+講義への 10 回以上の出席が期末試験の受験資格．
+</p>
+<ul>
+ <li><a href="http://portal.mie-u.ac.jp/moodle/course/view.php?id=1681">出席状況と採点結果 (Moodle)</a>
+     <!--span class="new"> [新] </span-->
+     <!--span class="new"> [更新] </span-->
+     <!--span class="em"> ← 試験の成績も掲載 </span-->
+     </li>
+<!--
+ <li><a href="exam.html">期末試験</a>
+     (<a href="material/exam.pdf">問題と解答</a>)
+     </li>
+-->
+</ul>
+</div>
+
+<h2>●詳細</h2>
+
+<div class="indent">
+<table border="2" summary="授業の詳細情報">
+ <col class="details">
+ <col>
+ <tr><th>科目名</th>   <td>数理論理学</td></tr>
+ <tr><th>授業形態</th> <td>講義</td></tr>
+ <tr><th>対象学年</th> <td>2年次</td></tr>
+ <tr><th>開講期間</th> <td>後期，水曜日 9〜10時限 (16:20-17:50)</td></tr>
+ <tr><th>教室</th>     <td>17番教室</td></tr>
+ <tr><th>教員</th>     <td>山田 俊行</td></tr>
+ <tr><th>ＴＡ</th>     <td>菊田 宇宙</td></tr>
+ <tr><th>連絡先</th>   <td>メール：<img src="mathlogic.png" alt="mathlogic@cs"><br>
+			   面談：水曜日 7〜8時限 (14:40-16:10)，他の時間は要連絡，情報棟5階 山田講師室
+		           </td></tr>
+ <tr><th>受講者数</th> <td>92名<!--80名--></td></tr>
+ <tr><th>単位数</th>   <td>2単位</td></tr>
+ <tr><th>科目番号</th> <td>D8901</td></tr>
+ <tr><th>科目区分</th> <td>基礎教育，必修</td></tr>
+</table>
+</div>
+
+<div class="footer">
+<hr><!--============================================================-->
+<p>
+山田 俊行<br>
+<a href="../../index-j.html">http://www.cs.info.mie-u.ac.jp/~toshi/</a>
+</p>
+</div>
+
+</body>
+
+</html>
