@@ -1,0 +1,28 @@
+DatabaseName: BST_ScoreTool
+
+Tables:
+user(
+	UID		serial,
+	UserName	char(32) Unique NOT NULL,
+	PassHash	char(128) NOT NULL,
+	PassSalt	char(32) NOT NULL,
+
+	Primary Key(UID)
+);
+song(
+	SongID		int unsigned,
+	Name		varchar(64) NOT NULL,
+
+	Primary Key(SongID)
+);
+score(
+	UID		bigint unsigned,
+	SongID		int unsigned,
+	Difficulty	int NOT NULL,
+	Score		int unsigned,
+	Lamp		int,
+
+	Primary Key(UID, SongID, Difficulty),
+	Foreign Key(UID) References user(UID),
+	Foreign Key(SongID) References song(SongID)
+);
