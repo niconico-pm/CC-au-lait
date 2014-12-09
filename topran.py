@@ -81,8 +81,93 @@ parser.feed(allLines)
 
 scorelist = parser.get_scorelist()
 #print scorelist
+song_num = 0
+l_num = 0
+m_num = 0
+b_num = 0
+l_total = 0
+m_total = 0
+b_total = 0
+lp = 0
+lf = 0
+lc = 0
+lb = 0
+mp = 0
+mf = 0
+mc = 0
+mb = 0
+bp = 0
+bf = 0
+bc = 0
+bb = 0
+ln = 0
+mn = 0
+bn = 0
 for score in scorelist:
     print "曲名   :", score[0]
     print "Light  :", score[1], score[2]
     print "Medium :", score[3], score[4]
     print "Beast  :", score[5], score[6]
+    if score[1] != None:
+        l_total += int(score[1])
+        l_num += 1
+    if score[3] != None:
+        m_total += int(score[3])
+        m_num += 1
+    if score[5] != None:
+        b_total += int(score[5])
+        b_num += 1
+    if score[2] != None:
+        if score[2] == 'Perfect':
+            lp += 1
+        if score[2] == 'FullCombo':
+            lf += 1
+        if score[2] == 'Clear':
+            lc += 1
+        if score[2] == 'Failed':
+            lb += 1
+    else:
+        ln += 1
+    if score[4] != None:
+        if score[4] == 'Perfect':
+            mp += 1
+        if score[4] == 'FullCombo':
+            mf += 1
+        if score[4] == 'Clear':
+            mc += 1
+        if score[4] == 'Failed':
+            mb += 1
+    else:
+        mn += 1
+    if score[6] != None:
+        if score[6] == 'Perfect':
+            bp += 1
+        if score[6] == 'FullCombo':
+            bf += 1
+        if score[6] == 'Clear':
+            bc += 1
+        if score[6] == 'Failed':
+            bb += 1
+    else:
+        bn += 1
+    song_num += 1
+print "Total Score"
+print "Light  :", l_total
+print "Medium :", m_total
+print "Beast  :", b_total
+print "Total  :", l_total + b_total + b_total
+print "Average Score"
+print "Light  :", l_total / song_num
+print "Medium :", m_total / song_num
+print "Beast  :", b_total / song_num
+print "Average Score(プレイ済み)"
+print "Light  :", l_total / l_num
+print "Medium :", m_total / m_num
+print "Beast  :", b_total / b_num
+print "Clear Lanp"
+print "Lanp      : Light, Medium, Beast"
+print "Perfect   :", lp, ",", mp, ",", bp
+print "FullCombo :", lf, ",", mf, ",", bf
+print "Clear     :", lc, ",", mc, ",", bc
+print "Failed    :", lb, ",", mb, ",", bb
+print "NoPlay    :", ln, ",", mn, ",", bn

@@ -1,0 +1,256 @@
+﻿曲名   : Anicca
+Light  : 1000000 Perfect
+Medium : None None
+Beast  : 1000000 Perfect
+曲名   : 天ノ弱
+Light  : 1000000 Perfect
+Medium : None None
+Beast  : 0994280 FullCombo
+曲名   : Idola
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 0993241 FullCombo
+曲名   : 色は匂へど 散りぬるを
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 1000000 Perfect
+曲名   : INFINITE WORLD
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 1000000 Perfect
+曲名   : ウサテイ
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 0991509 FullCombo
+曲名   : 泡沫、哀のまほろば
+Light  : None None
+Medium : None None
+Beast  : None None
+曲名   : お嫁にしなさいっ！
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 1000000 Perfect
+曲名   : オラシオン
+Light  : None None
+Medium : None None
+Beast  : 1000000 Perfect
+曲名   : 過食性:アイドル症候群
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 0987716 FullCombo
+曲名   : カタルシスの月
+Light  : None None
+Medium : None None
+Beast  : None None
+曲名   : Colorful Days ～NEWラブプラス メインテーマ～
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 1000000 Perfect
+曲名   : 共鳴のTrue Force
+Light  : 1000000 Perfect
+Medium : None None
+Beast  : 1000000 Perfect
+曲名   : 狂イ咲ケ焔ノ華
+Light  : None None
+Medium : None None
+Beast  : None None
+曲名   : ケッペキショウ
+Light  : None None
+Medium : None None
+Beast  : None None
+曲名   : ケロ⑨destiny
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 1000000 Perfect
+曲名   : げきオコスティックファイナリアリティぷんぷんマスタースパーク
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 0999238 FullCombo
+曲名   : 幻想系世界修復少女
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 1000000 Perfect
+曲名   : 恋する☆宇宙戦争っ！！
+Light  : None None
+Medium : None None
+Beast  : 0787975 Failed
+曲名   : 最終鬼畜妹フランドール・S
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 0999723 FullCombo
+曲名   : サリシノハラ
+Light  : None None
+Medium : None None
+Beast  : None None
+曲名   : 祝祭のエレメンタリア
+Light  : 1000000 Perfect
+Medium : None None
+Beast  : 1000000 Perfect
+曲名   : しゅわスパ大作戦☆
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 1000000 Perfect
+曲名   : sweet little sister
+Light  : None None
+Medium : None None
+Beast  : None None
+曲名   : SAVIOR OF SONG
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 1000000 Perfect
+曲名   : HΨ=世界創造=EΨ
+Light  : 1000000 Perfect
+Medium : None None
+Beast  : 0993916 FullCombo
+曲名   : セツナトリップ
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 1000000 Perfect
+曲名   : 脱出ゲヱム
+Light  : None None
+Medium : None None
+Beast  : None None
+曲名   : ちくわパフェだよ☆ＣＫＰ
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 0996630 FullCombo
+曲名   : チルノのパーフェクトさんすう教室
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 1000000 Perfect
+曲名   : 月に叢雲華に風
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 1000000 Perfect
+曲名   : This game
+Light  : 0996363 FullCombo
+Medium : None None
+Beast  : 1000000 Perfect
+曲名   : ナイト・オブ・ナイツ
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 0966175 Clear
+曲名   : †渚の小悪魔ラヴリィ～レイディオ†  
+Light  : None None
+Medium : None None
+Beast  : 0985749 Clear
+曲名   : にゃにゃにゃんにゃんにゃーのこねこ
+Light  : None None
+Medium : None None
+Beast  : None None
+曲名   : Nyan Cat
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 1000000 Perfect
+曲名   : ねこみみスイッチ
+Light  : None None
+Medium : None None
+Beast  : None None
+曲名   : Bad Apple!! feat. nomico
+Light  : None None
+Medium : None None
+Beast  : None None
+曲名   : バンブーソード・ガール
+Light  : 1000000 Perfect
+Medium : 0999460 FullCombo
+Beast  : 0992202 FullCombo
+曲名   : ビビットストリーム
+Light  : None None
+Medium : None None
+Beast  : 0997920 FullCombo
+曲名   : ブレイドダンス>
+Light  : None None
+Medium : None None
+Beast  : 1000000 Perfect
+曲名   : Help me，ERINNNNNN!!
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 1000000 Perfect
+曲名   : 放課後ストライド
+Light  : 1000000 Perfect
+Medium : None None
+Beast  : 1000000 Perfect
+曲名   : 僕は空気が嫁ない
+Light  : None None
+Medium : None None
+Beast  : None None
+曲名   : 待チ人ハ来ズ。
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 1000000 Perfect
+曲名   : マネマネサイコトロピック
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 0994321 FullCombo
+曲名   : 魔理沙は大変なものを盗んでいきました
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 0998526 FullCombo
+曲名   : 回レ！雪月花
+Light  : 1000000 Perfect
+Medium : None None
+Beast  : 0977890 Clear
+曲名   : ミスターデジャブ
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 0991635 FullCombo
+曲名   : ミライノトビラ
+Light  : 1000000 Perfect
+Medium : None None
+Beast  : 1000000 Perfect
+曲名   : Miracle Halloween
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 1000000 Perfect
+曲名   : めうめうぺったんたん！！
+Light  : None None
+Medium : None None
+Beast  : None None
+曲名   : 物凄い勢いでけーねが物凄いうた
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 1000000 Perfect
+曲名   : ラクガキスト
+Light  : 1000000 Perfect
+Medium : None None
+Beast  : 0994800 FullCombo
+曲名   : リズの内心革命
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 0991461 FullCombo
+曲名   : 凛として咲く花の如く　～ひなビタ♪edition～
+Light  : None None
+Medium : None None
+Beast  : None None
+曲名   : Rainbow Magic
+Light  : 1000000 Perfect
+Medium : None None
+Beast  : 1000000 Perfect
+曲名   : 恋愛勇者
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 1000000 Perfect
+曲名   : ロストワンの号哭
+Light  : 1000000 Perfect
+Medium : 1000000 Perfect
+Beast  : 0996313 FullCombo
+Total Score
+Light  : 40996363
+Medium : 29999460
+Beast  : 45631220
+Total  : 132258803
+Average Score
+Light  : 694853
+Medium : 508465
+Beast  : 773410
+Average Score(プレイ済み)
+Light  : 999911
+Medium : 999982
+Beast  : 991983
+Clear Lanp
+Lanp      : Light, Medium, Beast
+Perfect   : 40 , 29 , 26
+FullCombo : 1 , 1 , 16
+Clear     : 0 , 0 , 3
+Failed    : 0 , 0 , 1
+NoPlay    : 18 , 29 , 13
