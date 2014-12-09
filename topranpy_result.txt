@@ -238,7 +238,7 @@ Total Score
 Light  : 40996363
 Medium : 29999460
 Beast  : 45631220
-Total  : 132258803
+Total  : 116627043
 Average Score
 Light  : 694853
 Medium : 508465

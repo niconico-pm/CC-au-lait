@@ -155,7 +155,7 @@ print "Total Score"
 print "Light  :", l_total
 print "Medium :", m_total
 print "Beast  :", b_total
-print "Total  :", l_total + b_total + b_total
+print "Total  :", l_total + m_total + b_total
 print "Average Score"
 print "Light  :", l_total / song_num
 print "Medium :", m_total / song_num
