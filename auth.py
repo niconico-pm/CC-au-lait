@@ -1,23 +1,20 @@
 # -*- coding: utf-8 -*-
 from Cookie import SimpleCookie
 from hashlib import sha512
-
-correct_username = "admin"
-password_salt = "salt"
-correct_passhash = sha512("pass" + password_salt).hexdigest()
+from uuid import uuid4
+import db
 
 def hash_password(password, salt):
     return sha512(password + salt).hexdigest()
 
+def make_salt():
+    return uuid4()
+
 def find_salt(username):
-    if username == correct_username:
-        return password_salt
-    return None
+    return db.get_salt(username)
 
 def find_passhash(username):
-    if username == correct_username:
-        return correct_passhash
-    return None
+    return db.get_passhash(username)
 
 def validate(username, passhash):
     cor_passhash = find_passhash(username)
