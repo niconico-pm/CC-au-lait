@@ -24,7 +24,7 @@ score(
 	MusicID		int unsigned,
 	Difficulty	int NOT NULL,
 	Score		int unsigned,
-	Lamp		int,
+	Medal		int,
 
 	Primary Key(UID, MusicID, Difficulty),
 	Foreign Key(UID) References user(UID),
