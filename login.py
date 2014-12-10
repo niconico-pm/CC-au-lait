@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from cgi import parse_qs
-import auth
+from mylib import auth
 
 def application(environ, start_response):
     htmllogin = """\
