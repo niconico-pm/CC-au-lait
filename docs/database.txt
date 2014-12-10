@@ -1,6 +1,6 @@
-DatabaseName: BST_ScoreTool
-
-Tables:
+Create Database BST_ScoreTool;
+Use BST_ScoreTool;
+Create Table
 user(
 	UID		serial,
 	UserName	char(32) Unique NOT NULL,
@@ -9,20 +9,24 @@ user(
 
 	Primary Key(UID)
 );
-song(
-	SongID		int unsigned,
+
+Create Table
+music(
+	MusicID		int unsigned,
 	Name		varchar(64) NOT NULL,
 
-	Primary Key(SongID)
+	Primary Key(MusicID)
 );
+
+Create Table
 score(
 	UID		bigint unsigned,
-	SongID		int unsigned,
+	MusicID		int unsigned,
 	Difficulty	int NOT NULL,
 	Score		int unsigned,
 	Lamp		int,
 
-	Primary Key(UID, SongID, Difficulty),
+	Primary Key(UID, MusicID, Difficulty),
 	Foreign Key(UID) References user(UID),
-	Foreign Key(SongID) References song(SongID)
+	Foreign Key(MusicID) References music(MusicID)
 );
