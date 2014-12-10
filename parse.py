@@ -72,7 +72,7 @@ class MyHTMLParser(HTMLParser):
     def get_scorelist(self):
         return self.scorelist
 
-f = open('beast_2.html', 'r')
+f = open('sample_beast.html', 'r')
 allLines = f.read()
 f.close()
 
