@@ -26,10 +26,12 @@ def runsql(sql):
     connector.close()
     return result
 
-def regist_user(username, passhash, salt):
-    try:
-        runsql("insert into " + TBL_User + " values(" + 
-               username + ", " + passhash + ", " + salt + ")")
+def register_user(username, passhash, salt):
+    sql = "insert into " + TBL_User + \
+        "(UserName, PassHash, PassSalt) values(" + \
+        '"' + username + '", "' + passhash + '", "' + salt + '")'
+    try: 
+        runsql(sql)
         return True
     except:
         return False
@@ -37,18 +39,21 @@ def regist_user(username, passhash, salt):
 def get_column(keyname, key, column, table):
     try:
         res = runsql("select " + column + " from " + table +
-                     "where " + keyname + " = " + key):
+                     "where " + keyname + " = " + key)
         return res
     except:
         return None
 
     
 def get_from_user(username, column):
-    res = runsql("select " + column + " from " + TBL_User +
-                 "where Username = " + username)
-    if(len(res) == 1):
-        return res[0]
-    else:
+    try:
+        res = runsql("select " + column + " from " + TBL_User +
+                     "where Username = " + username)
+        if(len(res) == 1):
+            return res[0]
+        else:
+            return None
+    except:
         return None
 
 def get_passhash(username):

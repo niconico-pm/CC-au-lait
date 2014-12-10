@@ -8,7 +8,7 @@ def hash_password(password, salt):
     return sha512(password + salt).hexdigest()
 
 def make_salt():
-    return uuid4()
+    return uuid4().hex
 
 def find_salt(username):
     return db.get_salt(username)
@@ -16,10 +16,23 @@ def find_salt(username):
 def find_passhash(username):
     return db.get_passhash(username)
 
+def register_user(username, password):
+    salt = make_salt()
+    passhash = hash_password(password, salt)
+    return db.register_user(username, passhash, salt)
+
 def validate(username, passhash):
     cor_passhash = find_passhash(username)
     if cor_passhash != None:
         return passhash == cor_passhash
+    else:
+        return False
+
+def validate_pass(username, password):
+    salt = find_salt(username)
+    if salt != None:
+        passhash = hash_password(password, salt)
+        return validate(username, passhash)
     else:
         return False
 
@@ -30,15 +43,14 @@ def read_cookie(http_cookie):
     else:
         return None
 
-def validate_cookie(environ):
-    if 'HTTP_COOKIE' in environ:
-        http_cookie = environ['HTTP_COOKIE']
+def validate_cookie(http_cookie):
+    if http_cookie != None:
         tup = read_cookie(http_cookie)
         if tup != None:
             return validate(*tup)
     return False
 
-def make_cookie(username, passhash, expires):
+def make_cookie(username, passhash, expires=None):
     ckname_user = 'username'
     ckname_hash = 'passhash'
     

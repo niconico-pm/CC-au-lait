@@ -1,5 +1,8 @@
 Create Database BST_ScoreTool;
+Grant Select, Insert, Update on BST_ScoreTool.* to httpd@localhost;
+
 Use BST_ScoreTool;
+
 Create Table
 user(
 	UID		serial,
