@@ -1,6 +1,6 @@
 from lib.selector import Selector
 from lib import auth
-import login
+import login, register
 import content
 
 def testpage(environ, start_response):
@@ -27,5 +27,6 @@ application = Selector({
         '/test'  : testpage,
         '/login' : login.application,
         '/logout': login.logout,
+        '/register' : register.application,
         '/': index,
         })

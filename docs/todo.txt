@@ -1,8 +1,11 @@
 [Hamanaka]
-login.pyをTemplate使うとかして綺麗に
-register.pyを書く
-Templateを使うMiddleware
+#login.pyをTemplate使うとかして綺麗に
+#register.pyを書く
+#Templateを使うMiddleware
 #__init__.pyを使ってディレクトリ整理
+/mypage
+/setting
+/user/*
 
 [Yamaguchi]
 vagrantにMysql-serverとMysql-Pythonを入れる

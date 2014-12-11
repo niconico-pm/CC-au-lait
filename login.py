@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from urlparse import parse_qs
-from string import Template
 from lib import auth
 import content
 
