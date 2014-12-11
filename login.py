@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from urlparse import parse_qs
+from string import Template
 from mylib import auth
 
-def application(environ, start_response):
-    htmllogin = """\
+htmllogin = Template("""\
 <html>
 <head>
 <title>Login Page</title>
@@ -11,7 +11,7 @@ def application(environ, start_response):
 <body>
 <h2>Login</h2>
 <form method="POST" action="">
-  %s
+  ${message}<br>
   <label for="username">Username:</label>
   <input type="text" name="username"><br>
   <label for="password">Password:</label>
@@ -20,21 +20,23 @@ def application(environ, start_response):
 </form>
 </body>
 </html>
-"""
-    htmllogined = """\
+""")
+htmllogined = Template("""\
 <html><head>
 <title>Login Succeed</title>
 </head>
 <body>
 <h2>Login Succeed!</h2>
-<p>Hello, %s!</p>
+<p>Hello, ${username}!</p>
 <form method="POST" action="">
   <input type="hidden" name="logout" value="1">
   <input type="submit" value="Logout">
 </form>
 </body>
 </html>
-"""
+""")
+
+def application(environ, start_response):
     status = '200 OK'
     response_headers = [('Content-type', 'text/html')]
     html = "init"
@@ -49,15 +51,17 @@ def application(environ, start_response):
             if salt != None:
                 passhash = auth.hash_password(password, salt)
                 if auth.validate(username, passhash):
-                    response_headers += auth.make_cookie(username, passhash, None)
-                    html = htmllogined % username
+                    response_headers += auth.make_cookie(username, passhash)
+                    html = htmllogined.substitute(username=username)
+                else:
+                    html = htmllogin.substitute(message="Wrong password.")
             else:
-                html = htmllogin % ("Invalid Username or Password" + "<br>")
+                html = htmllogin.substitute(message="Not registered: " + username)
         elif 'logout' in post:
             response_headers += auth.delete_cookie()
-            html = htmllogin % "Logouted.<br>"
+            html = htmllogin.substitute(message="Logouted.")
         else:
-            html = htmllogin % "Enter Username or Password<br>"
+            html = htmllogin.substitute(message="Enter Username or Password")
     elif 'HTTP_COOKIE' in environ:
         tup = auth.read_cookie(environ['HTTP_COOKIE'])
         if tup != None:
@@ -65,11 +69,11 @@ def application(environ, start_response):
             if auth.validate(username, passhash):
                 html = htmllogined % username
             else:
-                html = htmllogin % ("Authrization failed (" + username + ", " + passhash + ")<br>")
+                html = htmllogin.substitute(message="Authrization failed (" + username + ", " + passhash + ")")
         else:
-            html = htmllogin % ("Invalid Cookie<br>")
+            html = htmllogin.substitute(message="Invalid Cookie")
     else:
-        html = htmllogin % ""
+        html = htmllogin.substitute(message="")
 
     start_response(status, response_headers)
     return [html]

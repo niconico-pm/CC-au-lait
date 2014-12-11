@@ -67,5 +67,5 @@ def make_cookie(username, passhash, expires=None):
     return outlist
 
 def delete_cookie():
-    return make_cookie_outputlist("deleted", "deleted", 0);
+    return make_cookie("deleted", "deleted", 0);
 
