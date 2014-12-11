@@ -43,8 +43,9 @@ def read_cookie(http_cookie):
     else:
         return None
 
-def validate_cookie(http_cookie):
-    if http_cookie != None:
+def validate_cookie(environ):
+    if 'HTTP_COOKIE' in environ:
+        http_cookie = environ['HTTP_COOKIE']
         tup = read_cookie(http_cookie)
         if tup != None:
             return validate(*tup)

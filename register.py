@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from urlparse import parse_qs
-from mylib import auth
+from lib import auth
 
 def application(environ, start_response):
     htmllogin = """\

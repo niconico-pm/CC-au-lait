@@ -1,79 +1,47 @@
 # -*- coding: utf-8 -*-
 from urlparse import parse_qs
 from string import Template
-from mylib import auth
+from lib import auth
+import content
 
-htmllogin = Template("""\
-<html>
-<head>
-<title>Login Page</title>
-</head>
-<body>
-<h2>Login</h2>
-<form method="POST" action="">
-  ${message}<br>
-  <label for="username">Username:</label>
-  <input type="text" name="username"><br>
-  <label for="password">Password:</label>
-  <input type="password" name="password"><br>
-  <input type="submit" value="Login">
-</form>
-</body>
-</html>
-""")
-htmllogined = Template("""\
-<html><head>
-<title>Login Succeed</title>
-</head>
-<body>
-<h2>Login Succeed!</h2>
-<p>Hello, ${username}!</p>
-<form method="POST" action="">
-  <input type="hidden" name="logout" value="1">
-  <input type="submit" value="Logout">
-</form>
-</body>
-</html>
-""")
+def redirect(environ, start_response):
+    status = '301 Redirect'
+    response_header = [('Location', 'http://' + environ['HTTP_HOST'])]
+    start_response(status, response_header)
+    return []
 
-def application(environ, start_response):
+def get_login(environ, start_response, message=''):
     status = '200 OK'
     response_headers = [('Content-type', 'text/html')]
-    html = "init"
-
-    method = environ['REQUEST_METHOD']
-    if method == 'POST':
-        post = parse_qs(environ['wsgi.input'].read())
-        if 'username' in post and 'password' in post:
-            username = post['username'][0]
-            password = post['password'][0]
-            salt = auth.find_salt(username)
-            if salt != None:
-                passhash = auth.hash_password(password, salt)
-                if auth.validate(username, passhash):
-                    response_headers += auth.make_cookie(username, passhash)
-                    html = htmllogined.substitute(username=username)
-                else:
-                    html = htmllogin.substitute(message="Wrong password.")
-            else:
-                html = htmllogin.substitute(message="Not registered: " + username)
-        elif 'logout' in post:
-            response_headers += auth.delete_cookie()
-            html = htmllogin.substitute(message="Logouted.")
-        else:
-            html = htmllogin.substitute(message="Enter Username or Password")
-    elif 'HTTP_COOKIE' in environ:
-        tup = auth.read_cookie(environ['HTTP_COOKIE'])
-        if tup != None:
-            username, passhash = tup
-            if auth.validate(username, passhash):
-                html = htmllogined % username
-            else:
-                html = htmllogin.substitute(message="Authrization failed (" + username + ", " + passhash + ")")
-        else:
-            html = htmllogin.substitute(message="Invalid Cookie")
-    else:
-        html = htmllogin.substitute(message="")
-
+    template = content.get_template("login.tpl")
+    header = content.get_html("header.html")
+    html = template.substitute(header=header, message=message)
     start_response(status, response_headers)
     return [html]
+
+def post_login(environ, start_response):
+    post = parse_qs(environ['wsgi.input'].read())
+    if 'username' in post and 'password' in post:
+        username = post['username'][0]
+        password = post['password'][0]
+        if auth.validate_pass(username, password):
+            passhash = auth.find_passhash(username)
+            response_headers = auth.make_cookie(username, passhash)
+            status = '301 Redirect'
+            response_headers += [('Location', 'http://' + environ['HTTP_HOST'])]
+            start_response(status, response_headers)
+            return []
+        else:
+            return get_login(environ, start_response, "UsernameかPasswordが間違っています。")
+    else:
+        return get_login(environ, start_response, "UsernameとPasswordを入力してください。")
+
+def application(environ, start_response):
+    method = environ['REQUEST_METHOD']
+    if method == 'GET':
+        if auth.validate_cookie(environ):
+            return redirect(environ, start_response)
+        else:
+            return get_login(environ, start_response)
+    elif method == 'POST':
+        return post_login(environ, start_response)
