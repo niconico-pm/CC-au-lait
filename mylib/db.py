@@ -29,32 +29,37 @@ def runsql(sql):
 def register_user(username, passhash, salt):
     sql = "insert into " + TBL_User + \
         "(UserName, PassHash, PassSalt) values(" + \
-        '"' + username + '", "' + passhash + '", "' + salt + '")'
-    try: 
+        "'" + username + "', '" + passhash + "', '" + salt + "')"
+    try:
         runsql(sql)
         return True
     except:
         return False
 
 def get_column(keyname, key, column, table):
+    sql = "select " + column + " from " + table + \
+        " where " + keyname + " = '" + key + "'"
     try:
-        res = runsql("select " + column + " from " + table +
-                     "where " + keyname + " = " + key)
-        return res
+        res = runsql(sql)
     except:
         return None
+    return res
 
-    
 def get_from_user(username, column):
+    sql = "select " + column + " from " + TBL_User + \
+        " where Username = '" + username + "'"
     try:
-        res = runsql("select " + column + " from " + TBL_User +
-                     "where Username = " + username)
-        if(len(res) == 1):
-            return res[0]
-        else:
-            return None
-    except:
+        res = runsql(sql)
+    except Exception as inst:
+        # とりあえずそのまんま投げる
+        raise inst
+
+    if(len(res) == 0):
         return None
+    elif(len(res) == 1):
+        return res[0][0].encode('utf-8')
+    else:
+        raise Exception("Double registration")
 
 def get_passhash(username):
     return get_from_user(username, "PassHash")

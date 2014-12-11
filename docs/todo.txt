@@ -1,0 +1,34 @@
+[Hamanaka]
+login.pyをTemplate使うとかして綺麗に
+register.pyを書く
+Templateを使うMiddleware
+#__init__.pyを使ってディレクトリ整理
+
+[Yamaguchi]
+vagrantにMysql-serverとMysql-Pythonを入れる
+--mysql-server instration
+http://centossrv.com/mysql.shtml
+--mysql-python instration
+http://momijiame.tumblr.com/post/30661437311/centos-6-3-pip-mysql-python-mysqldb
+
+いろいろ調べて'httpd'@'localhost'ユーザーを作って、パスワードPasswordで入れるようにする
+その後、rootユーザーでmysqlに入ってsource /home/vagrant/CC-au-lait/docs/database.txtを実行
+
+db.pyに
+# get_musicid(musictitile): <- いらないかも
+     res = select musicid from music where MusicName = musicttile
+     return res
+
+ set_score(username, musicid, scorelist):
+   for score in scorelist:
+     insert or update(username, musicid, score)
+
+ set_medal(username, musicid, medallist):
+   for medal in medallist:
+     insert or update(username, musicid, medal)
+
+ set_scorelist(username, datalist(includes musictitle, scorelist, medallist)):
+   musicid = get_musicid(datalist.musictitle)
+   set_score(username, musicid, datalist.scorelist)
+   set_medal(username, musicid, datalist.medallist)
+みたいのを追加
