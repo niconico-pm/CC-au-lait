@@ -6,11 +6,14 @@ Use BST_ScoreTool;
 Create Table
 user(
 	UID		serial,
-	UserName	char(32) Unique NOT NULL,
+	UserName	varchar(32) Unique NOT NULL,
+	NickName	varchar(64) NULL,
+	IsPublic	boolean NOT NULL default False,
 	PassHash	char(128) NOT NULL,
 	PassSalt	char(32) NOT NULL,
 
-	Primary Key(UID)
+	Primary Key(UID),
+	Index (UserName)
 );
 
 Create Table
@@ -22,14 +25,26 @@ music(
 );
 
 Create Table
+updation(
+	Count		int AUTO_INCREMENT,
+	UID		bigint unsigned,
+	Date		timestamp NOT NULL Default CURRENT_TIMESTAMP,
+
+	Primary Key(Count, UID),
+	Foreign Key(UID) References user(UID)
+);
+
+Create Table
 score(
 	UID		bigint unsigned,
 	MusicID		int unsigned,
-	Difficulty	int NOT NULL,
+	Difficulty	int,
+	UpCount		int,
 	Score		int unsigned,
 	Medal		int,
 
-	Primary Key(UID, MusicID, Difficulty),
+	Primary Key(UID, MusicID, Difficulty, UpCount),
 	Foreign Key(UID) References user(UID),
-	Foreign Key(MusicID) References music(MusicID)
+	Foreign Key(MusicID) References music(MusicID),
+	Foreign Key(UpCount) References updation(Count)
 );
