@@ -1,7 +1,8 @@
 import os
 from string import Template
 
-BASEDIR = os.path.dirname(os.path.abspath(__file__))
+CURDIR = os.path.dirname(os.path.abspath(__file__))
+BASEDIR = os.path.join(CURDIR, "..")
 HTMLDIR = os.path.join(BASEDIR, "html")
 TEMPLATEDIR = os.path.join(BASEDIR, "html")
 

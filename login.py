@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from urlparse import parse_qs
-from lib import auth
-import content
+from lib import auth, content
 
 def redirect(environ, start_response, response_header=None):
     status = '301 Redirect'
