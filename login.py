@@ -38,7 +38,7 @@ def post_login(environ, start_response):
 def logout(environ, start_response):
     tpl = content.get_template("main.tpl")
     header = content.get_html("header.html")
-    html = tpl.substitute(header=header, body="<p>ログアウトしました。</p>")
+    html = tpl.substitute(header=header, body="<h3>ログアウトしました。</h3>")
     cookie = auth.delete_cookie()
     status = '200 OK'
     response_headers = [('Content-type', 'text/html')]

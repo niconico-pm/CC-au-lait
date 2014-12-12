@@ -46,7 +46,7 @@ def show_logout(environ, start_response):
     tpl = content.get_template("main.tpl")
     username, _ = auth.read_cookie(environ['HTTP_COOKIE'])
     header = content.get_template("header_loggedin.tpl").substitute(username=username)
-    html = tpl.substitute(header=header, body="<p>ログアウトしてください</p>")
+    html = tpl.substitute(header=header, body="<h3>ログアウトしてください</h3>")
     status = '200 OK'
     response_headers = [('Content-type','text/html')]
     start_response(status, response_headers)
