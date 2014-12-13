@@ -1,4 +1,4 @@
-B65;100;1c# バージョンはすべて開発環境のもの
+# バージョンはすべて開発環境のもの
 # githubのcloneディレクトリは/path/to/basedirとする
 
 # requires(application)
