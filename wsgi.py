@@ -1,11 +1,16 @@
+# -*- coding: utf-8 -*-
 from lib.selector import Selector
-import index, login, register
+import css, index, login, register
 
-def testpage(environ, start_response):
+def test_env(environ, start_response):
     start_response('200 OK', [('Content-type', 'text/plain')])
-    return ["test page"]
+    yield "scrip_name: " + environ['SCRIPT_NAME']
+    yield "\npath_info: " + environ['PATH_INFO']
+    
+testpage = test_env
 
 application = Selector({
+        '/css'   : css.application,
         '/test'  : testpage,
         '/login' : login.application,
         '/logout': login.logout,
