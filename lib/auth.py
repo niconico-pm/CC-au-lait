@@ -16,6 +16,9 @@ def find_salt(username):
 def find_passhash(username):
     return db.get_passhash(username)
 
+def user_exists(username):
+    return find_salt(username) != None
+
 def register_user(username, password):
     salt = make_salt()
     passhash = hash_password(password, salt)

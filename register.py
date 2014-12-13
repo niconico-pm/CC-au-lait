@@ -2,11 +2,10 @@
 from urlparse import parse_qs
 from lib import auth, content
 
-def redirect(environ, start_response, response_header=None):
+def redirect(environ, start_response, response_header=[]):
     status = '301 Redirect'
     response_headers = [('Location', 'http://' + environ['HTTP_HOST'])]
-    if response_header != None:
-        response_headers += response_header
+    response_headers += response_header
     start_response(status, response_headers)
     return []
 
@@ -28,7 +27,7 @@ def post_register(environ, start_response):
         password = post['password'][0]
         verifypassword = post['verifypassword'][0]
         if password == verifypassword:
-            if auth.find_passhash(username) == None:
+            if not auth.user_exits(username):
                 if auth.register_user(username, password):
                     passhash = auth.find_passhash(username)
                     header = auth.make_cookie(username, passhash)

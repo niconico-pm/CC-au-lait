@@ -27,34 +27,49 @@ def runsql(sql):
     connector.close()
     return result
 
-def register_user(username, passhash, salt):
-    sql = "insert into " + TBL_User + \
-        "(UserName, PassHash, PassSalt) values(" + \
-        "'" + username + "', '" + passhash + "', '" + salt + "')"
+def quote(string):
+    return "'" + string + "'"
+
+def paren(string):
+    return "(" + string + ")"
+
+def comma(*args):
+    return ", ".join(args)
+
+def sqljoin(*args):
+    return " ".join(args)
+
+def sqlstr(arg):
+    if type(arg) == str:
+        return quote(arg)
+    else:
+        return str(arg)
+
+def sqlvalues(*args):
+    return comma(*[sqlstr(arg) for arg in args])
+
+def select(column, table):
+    return "select " + column + " from " + table
+
+def where(keycol, key):
+    return "where " + keycol + " = " + sqlstr(key)
+
+def insert_into(table, columns, values):
+    return "insert into " + table + paren(comma(*columns)) +\
+        " values" + paren(sqlvalues(*values))
+
+def register_user(username, passhash, passsalt):
+    sql = insert_into(TBL_User, ('UserName', 'PassHash', 'PassSalt'), 
+                      (username, passhash, passsalt))
     try:
         runsql(sql)
-        return True
     except:
         return False
-
-def get_column(keyname, key, column, table):
-    sql = "select " + column + " from " + table + \
-        " where " + keyname + " = '" + key + "'"
-    try:
-        res = runsql(sql)
-    except:
-        return None
-    return res
+    return True
 
 def get_from_user(username, column):
-    sql = "select " + column + " from " + TBL_User + \
-        " where Username = '" + username + "'"
-    try:
-        res = runsql(sql)
-    except Exception as inst:
-        # とりあえずそのまんま投げる
-        raise inst
-
+    sql = sqljoin(select(column, 'user'), where('Username', username))
+    res = runsql(sql)
     if(len(res) == 0):
         return None
     elif(len(res) == 1):
@@ -62,8 +77,12 @@ def get_from_user(username, column):
     else:
         raise Exception("Double registration")
 
+def get_UID(username):
+    return get_from_user(username, "UID")
+
 def get_passhash(username):
     return get_from_user(username, "PassHash")
 
 def get_salt(username):
     return get_from_user(username, "PassSalt")
+
