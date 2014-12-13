@@ -18,20 +18,23 @@ http://momijiame.tumblr.com/post/30661437311/centos-6-3-pip-mysql-python-mysqldb
 その後、rootユーザーでmysqlに入ってsource /home/vagrant/CC-au-lait/docs/database.txtを実行
 
 db.pyに
-# get_musicid(musictitile): <- いらないかも
-     res = select musicid from music where MusicName = musicttile
-     return res
+# get_musicid(musictitile): <- いらない
+#res = select musicid from music where MusicName = musicttile
+#return res
 
- set_score(username, musicid, scorelist):
-   for score in scorelist:
-     insert or update(username, musicid, score)
+def set_score(UID, musicid, UpDateCount, score, medal):
+  for i in range(0,3);
+    insert into (username, musicid, UpdateCount, i, score[i],medal[i])
+    
+def start_updation(uid):
+  now_updatecount = select updatecount from updation where UID = uid and 最大のやつ
+  updatecount = now_updatecount + 1
+  runsql('insert into updation(updatecount, uid) values(' + str(updatecount) + ', ' + str(uid) + ')')
+  return updatecount
 
- set_medal(username, musicid, medallist):
-   for medal in medallist:
-     insert or update(username, musicid, medal)
-
- set_scorelist(username, datalist(includes musictitle, scorelist, medallist)):
-   musicid = get_musicid(datalist.musictitle)
-   set_score(username, musicid, datalist.scorelist)
-   set_medal(username, musicid, datalist.medallist)
-みたいのを追加
+def update_data(username, scoredata):
+  UID = get_UID(username)
+  update_count = start_updation(UID)
+  for music, score, medal in scoredata:
+    MusicID, MusicName = music
+    set_score(UID, MusicID, UpDateCount, score, medal)

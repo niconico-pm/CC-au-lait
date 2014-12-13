@@ -84,8 +84,7 @@ class MyHTMLParser(HTMLParser):
 f = open('sample_beast.html', 'r')
 allLines = f.read()
 f.close()
-f = open('music_data.csv', 'w')
-
+msc = open('music_data.csv', 'w')
 
 parser = MyHTMLParser()
 parser.feed(allLines)
@@ -115,7 +114,7 @@ ln = 0
 mn = 0
 bn = 0
 for score in scorelist:
-    f.write(str(score[0][0]) + "," + score[0][1] + "\n")
+    msc.write(str(score[0][0]) + "," + score[0][1] + "\n")
     print "曲名   :", score[0][0], score[0][1]
     print "Light  :", score[1][0], score[2][0]
     print "Medium :", score[1][1], score[2][1]
@@ -183,4 +182,4 @@ print "FullCombo :", lf, ",", mf, ",", bf
 print "Clear     :", lc, ",", mc, ",", bc
 print "Failed    :", lb, ",", mb, ",", bb
 print "NoPlay    :", ln, ",", mn, ",", bn
-f.close()
+msc.close()

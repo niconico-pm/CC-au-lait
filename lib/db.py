@@ -9,6 +9,7 @@ MySQL_DB = "BST_ScoreTool"
 
 TBL_User = "user"
 TBL_Music = "music"
+TBL_Updation = "updation"
 TBL_Score = "score"
 
 def runsql(sql):
