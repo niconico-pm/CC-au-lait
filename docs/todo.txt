@@ -3,38 +3,42 @@
 #register.pyを書く
 #Templateを使うMiddleware
 #__init__.pyを使ってディレクトリ整理
+login状況を見るmiddleware
 /mypage
 /setting
 /user/*
 
 [Yamaguchi]
-vagrantにMysql-serverとMysql-Pythonを入れる
---mysql-server instration
-http://centossrv.com/mysql.shtml
---mysql-python instration
-http://momijiame.tumblr.com/post/30661437311/centos-6-3-pip-mysql-python-mysqldb
+#vagrantにMysql-serverとMysql-Pythonを入れる
+#--mysql-server instration
+#http://centossrv.com/mysql.shtml
+#--mysql-python instration
+#http://momijiame.tumblr.com/post/30661437311/centos-6-3-pip-mysql-python-mysqldb
 
-いろいろ調べて'httpd'@'localhost'ユーザーを作って、パスワードPasswordで入れるようにする
-その後、rootユーザーでmysqlに入ってsource /home/vagrant/CC-au-lait/docs/database.txtを実行
+#いろいろ調べて'httpd'@'localhost'ユーザーを作って、パスワードPasswordで入れるようにする
+#その後、rootユーザーでmysqlに入ってsource /home/vagrant/CC-au-lait/docs/database.txtを実行
 
 db.pyに
 # get_musicid(musictitile): <- いらない
 #res = select musicid from music where MusicName = musicttile
 #return res
 
-def set_score(UID, musicid, UpDateCount, score, medal):
-  for i in range(0,3);
-    insert into (username, musicid, UpdateCount, i, score[i],medal[i])
+def set_score(uid, musicid, count, score, medal):
+  for dif in range(0,3):
+    runsql('insert into score values(' uid, musicid, count, dif, score[dif], medal[dif] ')')
     
 def start_updation(uid):
-  now_updatecount = select updatecount from updation where UID = uid and 最大のやつ
-  updatecount = now_updatecount + 1
-  runsql('insert into updation(updatecount, uid) values(' + str(updatecount) + ', ' + str(uid) + ')')
-  return updatecount
+  old_count = runsql('select max(count) from updation where UID = ' uid)
+  if old_count == None:
+    count = 0
+  else:
+    count = old_count + 1
+  runsql('insert into updation(updatecount, uid) values(' + str(count) + ', ' + str(uid) + ')')
+  return count
 
 def update_data(username, scoredata):
   UID = get_UID(username)
   update_count = start_updation(UID)
   for music, score, medal in scoredata:
     MusicID, MusicName = music
-    set_score(UID, MusicID, UpDateCount, score, medal)
+    set_score(UID, MusicID, update_count, score, medal)
