@@ -14,7 +14,7 @@ user(
 
 	Primary Key(UID),
 	Index (UserName)
-);
+) ENGINE=InnoDB;
 
 Create Table
 music(
@@ -22,7 +22,7 @@ music(
 	Name		varchar(64) NOT NULL,
 
 	Primary Key(MusicID)
-);
+) ENGINE=InnoDB;
 
 Create Table
 updation(
@@ -32,7 +32,7 @@ updation(
 
 	Primary Key(Count, UID),
 	Foreign Key(UID) References user(UID)
-);
+) ENGINE=InnoDB;
 
 Create Table
 score(
@@ -47,4 +47,4 @@ score(
 	Foreign Key(UID) References user(UID),
 	Foreign Key(MusicID) References music(MusicID),
 	Foreign Key(UpCount) References updation(Count)
-);
+) ENGINE=InnoDB;
