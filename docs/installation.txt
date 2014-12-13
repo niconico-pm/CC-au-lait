@@ -1,0 +1,28 @@
+B65;100;1c# バージョンはすべて開発環境のもの
+# githubのcloneディレクトリは/path/to/basedirとする
+
+# requires(application)
+Python 2.6.6
+Apache 2.2.15
+MySQL 14.14
+
+# requires(library)
+mod_wsgi 3.2
+MySQL-python 1.2.5
+
+# installation & settings
+[/etc/httpd/conf.d/wsgi.conf]
+LoadModule wsgi_module modules/mod_wsgi.so
+WSGIScriptAlias / /path/to/basedir/wsgi.py
+WSGIPythonPath /path/to/basedir
+<Directory /path/to/basedir>
+<Files wsgi.py>
+  Order deny,allow
+  Allow from all
+</Files>
+</Directory>
+
+[mysql -u root]
+Create User 'httpd'@'localhost' Identified By 'Password';
+Source /path/to/basedir/docs/database.txt
+Load Data Infile "/path/to/basedir/docs/music_data.csv" Into Table music Fields Terminated By ',' Enclosed By '"';
