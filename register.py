@@ -27,7 +27,7 @@ def post_register(environ, start_response):
         password = post['password'][0]
         verifypassword = post['verifypassword'][0]
         if password == verifypassword:
-            if not auth.user_exits(username):
+            if not auth.user_exists(username):
                 if auth.register_user(username, password):
                     passhash = auth.find_passhash(username)
                     header = auth.make_cookie(username, passhash)
