@@ -4,9 +4,13 @@
 #Templateを使うMiddleware
 #__init__.pyを使ってディレクトリ整理
 login状況を見るmiddleware
+  -> environ に {authenticated: True}を追加するとか
 /mypage
 /setting
 /user/*
+db.py O/R Mapper
+Session管理
+MVC
 
 [Yamaguchi]
 #vagrantにMysql-serverとMysql-Pythonを入れる
