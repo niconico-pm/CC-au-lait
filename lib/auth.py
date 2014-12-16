@@ -74,14 +74,21 @@ def delete_cookie():
     return make_cookie("deleted", "deleted", "Thu, 01-Jan-1970 00:00:01 GMT");
 
 class Authenticator(object):
-    environ_key = 'Authenticated'
+    ek_auth = 'Authenticated'
+    ek_user = 'UserName'
     def __init__(self, application):
         self.application = application
     def __call__(self, environ, start_response):
         if validate_cookie(environ):
-            environ[self.environ_key] = True
+            username, _ = read_cookie(environ['HTTP_COOKIE'])
+            environ[self.ek_auth] = True
+            environ[self.ek_user] = username
         return self.application(environ, start_response)
 
     @classmethod
     def authenticated(cls, environ):
-        return environ.get(cls.environ_key, False)
+        return environ.get(cls.ek_auth, False)
+
+    @classmethod
+    def get_username(cls, environ):
+        return environ.get(cls.ek_user, '')

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from wsgiref import util
 import os
+import auth
 
 def notFound(environ, start_response):
     start_response('404 NotFound', [('Content-type', 'text/html')])
@@ -59,11 +60,34 @@ class StaticResponser(object):
         try:
             content = open(filepath, 'r').read()
         except IOError:
-            content = filepath
-#            return self.notfound(environ, start_resnponse)
+#            content = filepath
+            return self.notfound(environ, start_resnponse)
 
         status = '200 OK'
         response_headers = [('Content-type', self.mime_type),
                             ('Content-Length', str(len(content)))]
         start_response(status, response_headers)
         return [content]
+
+class GetPostSelector(object):
+    def __init__(self, get_handler, post_handler):
+        self.get_handler = get_handler
+        self.post_handler = post_handler
+    
+    def __call__(self, environ, start_response):
+        method = environ.get('REQUEST_METHOD', 'GET')
+        if method == 'GET':
+            return self.get_handler(environ, start_response)
+        elif method == 'POST':
+            return self.post_handler(environ, start_response)
+
+class AuthSelector(object):
+    def __init__(self, authd_app, nauth_app):
+        self.authd_app = authd_app
+        self.nauth_app = nauth_app
+    
+    def __call__(self, environ, start_response):
+        if auth.Authenticator.authenticated(environ):
+            return self.authd_app(environ, start_response)
+        else:
+            return self.nauth_app(environ, start_response)

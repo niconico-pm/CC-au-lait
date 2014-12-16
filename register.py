@@ -3,14 +3,14 @@ from urlparse import parse_qs
 from lib import auth, content
 import common
 
-def get_handler(environ, start_response, message=''):
-    status = '200 OK'
-    response_headers = [('Content-type', 'text/html')]
-    
+def get_handler(environ, start_response, message=''):    
     template = content.get_template("main.tpl")
-    header = content.get_html("header.html")
+    header = common.header_html(environ)
     body = content.get_template("register.tpl").substitute(message=message)
     html = template.substitute(header=header, body=body)
+
+    status = '200 OK'
+    response_headers = [('Content-type', 'text/html')]
     start_response(status, response_headers)
     return [html]
 
@@ -35,21 +35,11 @@ def post_handler(environ, start_response):
     else:
         return get_handler(environ, start_response, "UsernameとPasswordを入力してください。")
 
-def notice_logout(environ, start_response):
-    tpl = content.get_template("main.tpl")
-    username, _ = auth.read_cookie(environ['HTTP_COOKIE'])
-    header = content.get_template("header_loggedin.tpl").substitute(username=username)
-    html = tpl.substitute(header=header, body="<h3>ログアウトしてください</h3>")
-    status = '200 OK'
-    response_headers = [('Content-type','text/html')]
-    start_response(status, response_headers)
-    return [html]
-
 def application(environ, start_response):
-    method = environ['REQUEST_METHOD']
+    method = environ.get('REQUEST_METHOD', 'GET')
     if method == 'GET':
-        if auth.validate_cookie(environ):
-            return notice_logout(environ, start_response)
+        if auth.Authenticator.authenticated(environ):
+            return common.notice_error(environ, start_response, "ログアウトしてください")
         else:
             return get_handler(environ, start_response)
     elif method == 'POST':
