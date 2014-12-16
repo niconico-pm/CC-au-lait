@@ -71,5 +71,17 @@ def make_cookie(username, passhash, expires=None):
     return outlist
 
 def delete_cookie():
-    return make_cookie("deleted", "deleted", 0);
+    return make_cookie("deleted", "deleted", "Thu, 01-Jan-1970 00:00:01 GMT");
 
+class Authenticator(object):
+    environ_key = 'Authenticated'
+    def __init__(self, application):
+        self.application = application
+    def __call__(self, environ, start_response):
+        if validate_cookie(environ):
+            environ[self.environ_key] = True
+        return self.application(environ, start_response)
+
+    @classmethod
+    def authenticated(cls, environ):
+        return environ.get(cls.environ_key, False)

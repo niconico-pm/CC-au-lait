@@ -1,13 +1,7 @@
 # -*- coding: utf-8 -*-
 from urlparse import parse_qs
 from lib import auth, content
-
-def redirect(environ, start_response, additional_headers=[]):
-    status = '303 See Other'
-    response_headers = [('Location', 'http://' + environ['HTTP_HOST'])]
-    response_headers += additional_headers
-    start_response(status, response_headers)
-    return []
+import common
 
 def get_handler(environ, start_response, message=''):
     status = '200 OK'
@@ -31,7 +25,7 @@ def post_handler(environ, start_response):
                 if auth.register_user(username, password):
                     passhash = auth.find_passhash(username)
                     header = auth.make_cookie(username, passhash)
-                    return redirect(environ, start_response, header)
+                    return common.redirect_top(environ, start_response, header)
                 else:
                     return get_handler(environ, start_response, "ユーザーの登録に失敗しました")
             else:

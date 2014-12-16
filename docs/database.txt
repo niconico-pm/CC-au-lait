@@ -7,7 +7,8 @@ Create Table
 user(
 	UID		serial,
 	UserName	varchar(32) Unique NOT NULL,
-	NickName	char(64) NULL,
+	NickName	char(32) NULL,
+	Comment		char(64) NULL,
 	IsPublic	boolean NOT NULL default False,
 	PassHash	char(128) NOT NULL,
 	PassSalt	char(32) NOT NULL,

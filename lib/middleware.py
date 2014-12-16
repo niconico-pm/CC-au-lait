@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 from wsgiref import util
+import os
 
 def notFound(environ, start_response):
     start_response('404 NotFound', [('Content-type', 'text/html')])
     return ["<h1>Not found</h1><p>The requested url %s was not found.</p>" % util.request_uri(environ)]
 
 class Selector(object):
-    ''' パスによるアプリケーション振り分けを行う '''
+    '''
+    パスによるアプリケーション振り分けを行う
+    '''
     def __init__(self, table, notfound=notFound):
 
         # パスは長い順にマッチさせたいので、あらかじめソートしておく
@@ -37,3 +40,30 @@ class Selector(object):
                 return app(environ, start_response)
 
         return self.notfound(environ, start_response)
+
+class StaticResponser(object):
+    '''
+    cssのような静的ファイルを返すmiddleware
+    filedirの下を探してあったらmime_typeファイルとして返す、なかったらnotfound
+    '''
+    def __init__(self, filedir, mime_type, notfound=notFound):
+        basedir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+        self.path = os.path.join(basedir, filedir)
+        self.notfound = notfound
+        self.mime_type = mime_type
+
+    def __call__(self, environ, start_response):
+        # path_infoから最初の/を削る
+        filename = environ['PATH_INFO'][1:]
+        filepath = os.path.join(self.path, filename)
+        try:
+            content = open(filepath, 'r').read()
+        except IOError:
+            content = filepath
+#            return self.notfound(environ, start_resnponse)
+
+        status = '200 OK'
+        response_headers = [('Content-type', self.mime_type),
+                            ('Content-Length', str(len(content)))]
+        start_response(status, response_headers)
+        return [content]
