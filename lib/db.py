@@ -12,18 +12,21 @@ TBL_Music = "music"
 TBL_Updation = "updation"
 TBL_Score = "score"
 
-def get_connector():
+def get_connection():
     return MySQLdb.connect(
         host=MySQL_Host,
         db=MySQL_DB,
         user=MySQL_User,
         passwd=MySQL_PassWd,
         charset=MySQL_Charset)
-common_connector = get_connector()
+common_connector = get_connection()
+
+def commit():
+    common_connector.commit()
 
 # 削除予定
 def runsql(sql):
-    connector = get_connector()
+    connector = get_connection()
     cursor = connector.cursor()
     cursor.execute(sql)
     result = cursor.fetchall()
@@ -72,5 +75,38 @@ class UserTable(Table):
             self.cur.execute(sql, vals)
         except:
             return False
+        common_connector.commit()
         return True
 user = UserTable()
+
+class Column(object):
+    def __init__(self, column_name):
+        self.column_name = column_name
+        
+    def __get__(self, obj, kind):
+        return self.value
+
+    def __set__(self, obj, value):
+        sql = "update " + obj.table.table_name + " set " + self.column_name + " = %s where " + obj.pk + " = %s"
+        vals = (value, obj.__dict__[obj.pk])
+        obj.table.cur.execute(sql, vals)
+        
+
+class Entity(object):
+    # def __init__(self, **kwargs, insertflag=True):
+    #     if insertflag:
+    #         pass
+    #     else:
+    #         for k, v in kwargs.iteritems():
+    #             self.__dict__[k].value = v;
+        
+class User(Entity):
+    table = user
+    UID = ("UID")
+    UserName = ("UserName")
+    NickName = ("NickName")
+    Comment = ("Comment")
+    IsPublic = ("IsPublic")
+    PassHash = ("PassHash")
+    PassSalt = ("PassSalt")
+    pk = 'UID'
