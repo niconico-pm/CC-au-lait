@@ -61,7 +61,7 @@ class StaticResponser(object):
             content = open(filepath, 'r').read()
         except IOError:
 #            content = filepath
-            return self.notfound(environ, start_resnponse)
+            return self.notfound(environ, start_response)
 
         status = '200 OK'
         response_headers = [('Content-type', self.mime_type),

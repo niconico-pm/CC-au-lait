@@ -12,13 +12,18 @@ TBL_Music = "music"
 TBL_Updation = "updation"
 TBL_Score = "score"
 
-def runsql(sql):
-    connector = MySQLdb.connect(
+def get_connector():
+    return MySQLdb.connect(
         host=MySQL_Host,
         db=MySQL_DB,
         user=MySQL_User,
         passwd=MySQL_PassWd,
         charset=MySQL_Charset)
+common_connector = get_connector()
+
+# 削除予定
+def runsql(sql):
+    connector = get_connector()
     cursor = connector.cursor()
     cursor.execute(sql)
     result = cursor.fetchall()
@@ -27,62 +32,45 @@ def runsql(sql):
     connector.close()
     return result
 
-def quote(string):
-    return "'" + string + "'"
+class Query(object):
+    def __init__(self, cur, sql, vals):
+        self.cur = cur
+        self.sql = sql
+        self.vals = vals
+    def where(self, **kwargs):
+        sql = self.sql
+        vals = list(self.vals)
+        k, v = kwargs.popitem()
+        sql += " where " + k + " = %s"
+        vals += [v]
+        for k, v in kwargs.items():
+            sql += " and " + k + " = %s"
+            vals += [v]
+        return Query(self.cur, sql, vals)
+    def one(self):
+        self.cur.execute(self.sql, self.vals)
+        return self.cur.fetchone()
+    def all(self):
+        self.cur.execute(self.sql, self.vals)
+        return self.cur.fetchall()
 
-def paren(string):
-    return "(" + string + ")"
+class Table(object):
+    def __init__(self, table_name):
+        self.cur = common_connector.cursor(MySQLdb.cursors.DictCursor)
+        self.table_name = table_name
+        sql = "select * from " + self.table_name
+        self.query = Query(self.cur, sql, [])
 
-def comma(*args):
-    return ", ".join(args)
+class UserTable(Table):
+    def __init__(self):
+        Table.__init__(self, "user")
 
-def sqljoin(*args):
-    return " ".join(args)
-
-def sqlstr(arg):
-    if type(arg) == str:
-        return quote(arg)
-    else:
-        return str(arg)
-
-def sqlvalues(*args):
-    return comma(*[sqlstr(arg) for arg in args])
-
-def select(column, table):
-    return "select " + column + " from " + table
-
-def where(keycol, key):
-    return "where " + keycol + " = " + sqlstr(key)
-
-def insert_into(table, columns, values):
-    return "insert into " + table + paren(comma(*columns)) +\
-        " values" + paren(sqlvalues(*values))
-
-def register_user(username, passhash, passsalt):
-    sql = insert_into(TBL_User, ('UserName', 'PassHash', 'PassSalt'), 
-                      (username, passhash, passsalt))
-    try:
-        runsql(sql)
-    except:
-        return False
-    return True
-
-def get_from_user(username, column):
-    sql = sqljoin(select(column, 'user'), where('Username', username))
-    res = runsql(sql)
-    if(len(res) == 0):
-        return None
-    elif(len(res) == 1):
-        return res[0][0].encode('utf-8')
-    else:
-        raise Exception("Double registration")
-
-def get_UID(username):
-    return get_from_user(username, "UID")
-
-def get_passhash(username):
-    return get_from_user(username, "PassHash")
-
-def get_salt(username):
-    return get_from_user(username, "PassSalt")
-
+    def register(self, username, passhash, passsalt):
+        sql = "insert into " + self.table_name + "(UserName, PassHash, PassSalt) values(%s, %s, %s)"
+        vals = [username, passhash, passsalt]
+        try:
+            self.cur.execute(sql, vals)
+        except:
+            return False
+        return True
+user = UserTable()
