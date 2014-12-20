@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
-
 from HTMLParser import HTMLParser
-import urllib2
 
-class MyHTMLParser(HTMLParser):
+class ScoreParser(HTMLParser):
     def __init__(self):
         self.nowtag = ''
         self.nowattr = ''
@@ -63,7 +61,6 @@ class MyHTMLParser(HTMLParser):
                 for name, value in attr:
                     if name == 'src':
                         self.music[0] = value.split('/')[-1].split('.')[0]
-                        print self.music
 
     def handle_endtag(self, tag):
         if tag == 'div':
@@ -80,106 +77,3 @@ class MyHTMLParser(HTMLParser):
 
     def get_scorelist(self):
         return self.scorelist
-
-f = open('sample_beast.html', 'r')
-allLines = f.read()
-f.close()
-msc = open('music_data.csv', 'w')
-
-parser = MyHTMLParser()
-parser.feed(allLines)
-
-scorelist = parser.get_scorelist()
-#print scorelist
-song_num = 0
-l_num = 0
-m_num = 0
-b_num = 0
-l_total = 0
-m_total = 0
-b_total = 0
-lp = 0
-lf = 0
-lc = 0
-lb = 0
-mp = 0
-mf = 0
-mc = 0
-mb = 0
-bp = 0
-bf = 0
-bc = 0
-bb = 0
-ln = 0
-mn = 0
-bn = 0
-for score in scorelist:
-    msc.write(str(score[0][0]) + "," + score[0][1] + "\n")
-    print "曲名   :", score[0][0], score[0][1]
-    print "Light  :", score[1][0], score[2][0]
-    print "Medium :", score[1][1], score[2][1]
-    print "Beast  :", score[1][2], score[2][2]
-    if score[1][0] != None:
-        l_total += int(score[1][0])
-        l_num += 1
-    if score[1][1] != None:
-        m_total += int(score[1][1])
-        m_num += 1
-    if score[1][2] != None:
-        b_total += int(score[1][2])
-        b_num += 1
-    if score[2][0] != None:
-        if score[2][0] == 3:
-            lp += 1
-        if score[2][0] == 2:
-            lf += 1
-        if score[2][0] == 1:
-            lc += 1
-        if score[2][0] == 0:
-            lb += 1
-    else:
-        ln += 1
-    if score[2][1] != None:
-        if score[2][1] == 3:
-            mp += 1
-        if score[2][1] == 2:
-            mf += 1
-        if score[2][1] == 1:
-            mc += 1
-        if score[2][1] == 0:
-            mb += 1
-    else:
-        mn += 1
-    if score[2][2] != None:
-        if score[2][2] == 3:
-            bp += 1
-        if score[2][2] == 2:
-            bf += 1
-        if score[2][2] == 1:
-            bc += 1
-        if score[2][2] == 0:
-            bb += 1
-    else:
-        bn += 1
-    song_num += 1
-print "Total Score"
-print "Light  :", l_total
-print "Medium :", m_total
-print "Beast  :", b_total
-print "Total  :", l_total + m_total + b_total
-print "Average Score"
-print "Light  :", l_total / song_num
-print "Medium :", m_total / song_num
-print "Beast  :", b_total / song_num
-print "Average Score(プレイ済み)"
-print "Light  :", l_total / l_num
-print "Medium :", m_total / m_num
-print "Beast  :", b_total / b_num
-print "Clear Medal"
-print "Medal     : Light, Medium, Beast"
-print "Perfect   :", lp, ",", mp, ",", bp
-print "FullCombo :", lf, ",", mf, ",", bf
-print "Clear     :", lc, ",", mc, ",", bc
-print "Failed    :", lb, ",", mb, ",", bb
-print "NoPlay    :", ln, ",", mn, ",", bn
-msc.close()
