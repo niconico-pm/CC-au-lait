@@ -42,14 +42,27 @@ class Selector(object):
 
         return self.notfound(environ, start_response)
 
+class FileResponser(object):
+    def __init__(self, filename, mime_type):
+        f = open(filename, "rb")
+        self.content = f.read()
+        self.content_length = len(self.content)
+        self.mime_type = mime_type
+        f.close()
+    def __call__(self, environ,start_response):
+        status = '200 OK'
+        response_headers = [('Content-type', self.mime_type),
+                            ('Content-Length', str(self.content_length))]
+        start_response(status, response_headers)
+        return [self.content]
+
 class StaticResponser(object):
     '''
     cssのような静的ファイルを返すmiddleware
-    filedirの下を探してあったらmime_typeファイルとして返す、なかったらnotfound
+    pathの下を探してあったらmime_typeファイルとして返す、なかったらnotfound
     '''
-    def __init__(self, filedir, mime_type, notfound=notFound):
-        basedir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-        self.path = os.path.join(basedir, filedir)
+    def __init__(self, path, mime_type, notfound=notFound):
+        self.path = path
         self.notfound = notfound
         self.mime_type = mime_type
 

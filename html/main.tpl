@@ -2,6 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="/css/common.css">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
 <title>BeatStream Score Tool</title>
 </head>
 <body>

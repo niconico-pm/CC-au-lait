@@ -11,22 +11,22 @@ def make_salt():
     return uuid4().hex
 
 def find_salt(username):
-    user = db.user.query.where(UserName = username).one()
+    user = db.User.select(UserName = username).one()
     if user != None:
-        return user.get('PassSalt', None)
+        return user.PassSalt
 
 def find_passhash(username):
-    user = db.user.query.where(UserName = username).one()
+    user = db.User.select(UserName = username).one()
     if user != None:
-        return user.get('PassHash', None)
+        return user.PassHash
 
 def user_exists(username):
-    return find_salt(username) != None
+    return db.User.select(UserName = username).one() != None
 
 def register_user(username, password):
     salt = make_salt()
     passhash = hash_password(password, salt)
-    return db.user.register(username, passhash, salt)
+    return db.User.new(UserName = username, PassHash = passhash, PassSalt = salt) != None
 
 def validate(username, passhash):
     cor_passhash = find_passhash(username)
