@@ -1,6 +1,6 @@
 <!-- content from here -->
 <h3>ユーザ情報</h3>
-<form accept-charset="UTF-8" action="" method="post">
+<form accept-charset="UTF-8" action="" method="post" autocomplete="off">
   <p>${message}</p>
   <p>Username: ${username}</p>
   <p><label for="nickname">Nickname</label><br>

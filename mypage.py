@@ -32,7 +32,7 @@ def make_table(username):
                 table += "</td>"
         else:
             table += "<td colspan=6 align=center>!No Data!</td>"
-        table += "</tr>"
+        table += "</tr>\n"
     return table
 def get_handler(environ, start_response):
     main_tpl = content.get_template("main.tpl")
