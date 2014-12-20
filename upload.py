@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from urlparse import parse_qs
 from lib import auth, content, db
-from lib.parser import ScoreParser
+from lib.score import ScoreParser, ScoreUpdater
 import common
 
 def get_handler(environ, start_response, message=""):
@@ -18,15 +18,24 @@ def get_handler(environ, start_response, message=""):
 
 def post_handler(environ, start_response):
     post = parse_qs(environ['wsgi.input'].read())
+    username = environ['UserName']
     if 'scorehtml' in post:
         scorehtml = post['scorehtml'][0]
-        parser = ScoreParser()
-        parser.feed(scorehtml)
-        scorelist = parser.get_scorelist()
-        start_response('200 OK', [('Content-type', 'text/plain')])
-        return [str(scorelist)]
+        try:
+            parser = ScoreParser()
+            parser.feed(scorehtml)
+            scorelist = parser.get_scorelist()
+            updater = ScoreUpdater()
+            updater.update_data(username, scorelist)
+        except:
+            if updater:
+                updater.rollback()
+            return get_handler(environ, start_response, "データの読み込みに失敗しました。申し訳ねえ。")
+        else:
+            updater.close()
+            return common.redirect(environ, start_response, '/mypage')
     else:
-        return get_handler(environ, start_response)
+        return get_handler(environ, start_response, message="ソースを入力してください。")
 
 def application(environ, start_response):
     method = environ.get('REQUEST_METHOD', 'GET')
@@ -34,6 +43,6 @@ def application(environ, start_response):
         if auth.Authenticator.authenticated(environ):
             return get_handler(environ, start_response)
         else:
-            return common.notice_error(environ, start_response, "ログインしてください")
+            return common.notice_error(environ, start_response, "ログインしてください。")
     elif method == 'POST':
         return post_handler(environ, start_response)

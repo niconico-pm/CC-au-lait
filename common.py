@@ -11,6 +11,12 @@ def header_html(environ):
     header = headertpl.substitute(menu=menu)
     return header
 
+def redirect(environ, start_response, location='/'):
+    status = '303 See Other'
+    response_headers = [('Location', 'http://' + environ['HTTP_HOST'] + location)]
+    start_response(status, response_headers)
+    return []    
+
 def redirect_top(environ, start_response, additional_headers=[]):
     status = '303 See Other'
     response_headers = [('Location', 'http://' + environ['HTTP_HOST'])]

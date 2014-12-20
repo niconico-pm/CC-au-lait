@@ -181,3 +181,15 @@ class User(Entity):
 
 class Music(Entity):
     table_name = 'music'
+    columns = ("MusicID", "Name")
+    pk = ("Name",)
+
+class Updation(Entity):
+    table_name = 'updation'
+    columns = ("Count", "UID", "Date")
+    pk = ("Count", "UID")
+
+class Score(Entity):
+    table_name = 'score'
+    columns = ("UID", "MusicID", "Difficulty", "UpCount", "Score", "Medal")
+    pk = ("UID", "MusicID", "Difficulty", "UpCount")

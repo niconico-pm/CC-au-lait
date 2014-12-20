@@ -2,7 +2,7 @@
 from lib.middleware import Selector
 from lib.auth import Authenticator
 from lib import content
-import common, login, register, setting, upload
+import common, login, register, setting, upload, mypage
 
 table = dict()
 def addtable(path):
@@ -33,5 +33,6 @@ table['/logout'] = login.logout
 table['/register'] = register.application
 table['/setting'] = setting.application
 table['/upload'] = upload.application
+table['/mypage'] = mypage.application
 
 application = Authenticator(Selector(table))
