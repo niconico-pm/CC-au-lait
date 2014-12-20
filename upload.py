@@ -21,10 +21,12 @@ def post_handler(environ, start_response):
     username = environ['UserName']
     if 'scorehtml' in post:
         scorehtml = post['scorehtml'][0]
+        updater = None
         try:
             parser = ScoreParser()
             parser.feed(scorehtml)
             scorelist = parser.get_scorelist()
+            if len(scorelist) <= 0: raise
             updater = ScoreUpdater()
             updater.update_data(username, scorelist)
         except:

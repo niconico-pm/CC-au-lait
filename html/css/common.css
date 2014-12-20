@@ -24,7 +24,7 @@ body {
 }
 
 .header-wrapper {
-    width: 760px;
+    width: 890px;
     height: 22px;
     margin: 0 auto;
 }
@@ -46,6 +46,6 @@ body {
 /* } */
 
 #content {
-    width: 760px;
+    width: 890px;
     margin: 0 auto;
 }
