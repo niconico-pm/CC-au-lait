@@ -49,3 +49,10 @@ body {
     width: 890px;
     margin: 0 auto;
 }
+
+td {
+    text-align: center;
+}
+.music_title {
+    text-align: left;
+}

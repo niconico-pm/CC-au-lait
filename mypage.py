@@ -20,22 +20,22 @@ def make_table(username):
     for data in scoredata:
         table += "<tr>"
         music, scores = data
-        table += '<td>'
+        table += '<td class="music_title">'
         table += music[1].encode('utf-8')
         table += "</td>"
         if len(scores) > 0:
             for dif in range(0, 3):
-                table += '<td align=center>'
+                table += '<td>'
                 if scores[dif][0]:
                     table += str(scores[dif][0])
                 else:
                     table += "no play"
                 table += "</td>"
-                table += '<td align=center>'
+                table += '<td>'
                 if scores[dif][1]:
                     table += medal[scores[dif][1]]
                 table += "</td>"
-                table += '<td align=center>'
+                table += '<td>'
                 if scores[dif][0]:
                     table += grade(scores[dif][0])
                 table += "</td>"
