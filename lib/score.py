@@ -4,7 +4,7 @@ import db
 
 class ScoreUpdater(object):
     def __init__(self):
-        self.con = db.Connection()
+        self.con = db.SimpleConnection()
         
     def close(self):
         self.con.commit()
@@ -17,12 +17,12 @@ class ScoreUpdater(object):
     def get_UID(self, username):
         self.con.cur.execute('select UID from user where UserName = %s', (username,))
         user = self.con.cur.fetchone()
-        self.UID = user['UID']
+        self.UID, = user       # unpack tuple
         
     def start_updation(self):
-        self.con.cur.execute('select max(Count) as old_count from updation where UID = %s', (self.UID,))
+        self.con.cur.execute('select max(Count) from updation where UID = %s', (self.UID,))
         result = self.con.cur.fetchone()
-        old_count = result['old_count']
+        old_count, = result
         if old_count == None:
             count = 0
         else:
@@ -41,43 +41,53 @@ class ScoreUpdater(object):
             self.set_score(music[0], scores, medals)
 
 class ScoreGetter(object):
-    def __init__(self):
-        self.con = db.Connection()
-        self.cur = self.con.con.cursor()
+    def __init__(self, username):
+        self.con = db.SimpleConnection()
+        self.init_UID(username)
+        self.count = self.get_maxcount()
 
     def close(self):
-        self.cur.close()
         self.con.close()
 
-    def get_UID(self, username):
-        self.cur.execute('select UID from user where UserName = %s', (username,))
-        user = self.cur.fetchone()
+    def init_UID(self, username):
+        self.con.cur.execute('select UID from user where UserName = %s', (username,))
+        user = self.con.cur.fetchone()
         self.UID = user
 
-    def get_count(self):
-        self.cur.execute('select max(Count) as count from updation where UID = %s', (self.UID,))
-        result = self.cur.fetchone()
-        self.count = result[0]
-        
-    def get_musiclist(self):
-        self.cur.execute('select MusicId, Name from music')
-        result = self.cur.fetchall()
+    def get_maxcount(self):
+        self.con.cur.execute('select max(Count) from updation where UID = %s', (self.UID,))
+        result = self.con.cur.fetchone()
+        self.maxcount, = result
+        return self.maxcount
+
+    def set_count(self, count):
+        if count < 0:
+            count += self.maxcount + 1
+
+        if count < 0 or count > self.maxcount:
+            return False
+        else:
+            self.count = count
+            return True
+
+    def get_date(self):
+        self.con.cur.execute('select Date from updation where Count = %s', (self.count,))
+        result = self.con.cur.fetchone()
+        return result[0]
+
+    def init_musiclist(self):
+        self.con.cur.execute('select MusicId, Name from music')
+        result = self.con.cur.fetchall()
         self.musiclist = result
     
     def get_score(self, musicid):
-        self.cur.execute('select Score, Medal from score where UID = %s and MusicId = %s and UpCount = %s order by Difficulty', (self.UID, musicid, self.count))
-        result = self.cur.fetchall()
+        self.con.cur.execute('select Score, Medal from score where UID = %s and MusicId = %s and UpCount = %s order by Difficulty', (self.UID, musicid, self.count))
+        result = self.con.cur.fetchall()
         return result
-            
-    def get_scoredata(self, username):
-        self.get_UID(username)
-        self.get_count()
-        self.get_musiclist()
-        scoredata = []
-        for music in self.musiclist:
-            musicid = music[0]
-            scoredata += [(music, self.get_score(musicid))]
-        return scoredata
+    
+    def get_scoredata(self):
+        self.init_musiclist()
+        return [(music, self.get_score(music[0])) for music in self.musiclist]
         
 class ScoreParser(HTMLParser):
     def __init__(self):

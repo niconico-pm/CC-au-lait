@@ -42,6 +42,11 @@ class Connection(object):
         self.cur.close()
         self.con.close()
 
+class SimpleConnection(Connection):
+    def __init__(self):
+        self.con = get_connection()
+        self.cur = self.con.cursor()
+
 # 削除予定        
 def runsql(sql):
     connector = get_connection()
