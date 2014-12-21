@@ -60,11 +60,12 @@ def get_handler(environ, start_response):
     nickname = db.User.select(UserName=username).one().NickName
     count = get_count(environ)
     getter = Getter(username)
-    link = make_link(count, getter.maxcount)
     if getter.set_count(count):
+        link = make_link(count, getter.maxcount)
         date = str(getter.get_date())
         table = getter.make_table()
     else:
+        link = ""
         date = ""
         table = "<p>スコアデータがありません。</p>"
     getter.close()

@@ -57,10 +57,11 @@ class ScoreGetter(object):
     def get_maxcount(self):
         self.con.cur.execute('select max(Count) from updation where UID = %s', (self.UID,))
         result = self.con.cur.fetchone()
-        self.maxcount, = result
+        self.maxcount,  = result
         return self.maxcount
 
     def set_count(self, count):
+        if self.maxcount == None: return False
         if count < 0:
             count += self.maxcount + 1
 
