@@ -130,13 +130,14 @@ class Entity(object):
         try:
             con = Connection()
             con.cur.execute(sql, vals)
-            entity = cls.select(**kwargs).one()
         except:
             con.rollback()
-            entity = None
+            con.close()
+            return None
         else:
             con.commit()
             con.close()
+        entity = cls.select(**kwargs).one()
         return entity
 
     @classmethod

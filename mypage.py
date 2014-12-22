@@ -45,12 +45,8 @@ def make_link(count, maxcount):
     next = count + 1
     prevlink = '<a href="/mypage/%d" style="float: left">< 前の更新</a>' % prev
     nextlink = '<a href="/mypage/%d" style="float: right">次の更新 ></a>' % next
-    if count == maxcount or next == 0:
-        return prevlink
-    elif count == 0 or count == - (maxcount + 1):
-        return nextlink
-    else:
-        return prevlink + nextlink
+    return (prevlink if count != 0 and count != - (maxcount + 1) else "") +\
+           (nextlink if count != maxcount and next != 0 else "")
 
 def get_handler(environ, start_response):
     main_tpl = content.get_template("main.tpl")
