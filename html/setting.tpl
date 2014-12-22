@@ -7,7 +7,7 @@
      <input type="text" name="nickname" value="${nickname}"></p>
   <p><label for="comment">Comment</label><br>
      <input type="text" name="comment" value="${comment}"></p>
-  <p><label for="ispublic">スコアデータを公開する</label><br>
+  <p><label for="ispublic">スコアデータを公開する<br>(<a href="${url}">${url_label}</a>で外部から閲覧可能にします)</label><br>
      <input type="checkbox" name="ispublic" value="True" ${ispublic}></p>
   <p><input type="submit" value="決定"></p>
 </form>

@@ -9,13 +9,12 @@ def get_handler(environ, start_response, message=""):
     tpl = content.get_template("setting.tpl")
     username = auth.Authenticator.get_username(environ)
     user = db.User.select(UserName = username).one()
-    body = tpl.substitute(
-        message = message,
-        username = username,
-        nickname = user.NickName.encode('utf-8') if user.NickName else "",
-        comment = user.Comment.encode('utf-8') if user.Comment else "",
-        ispublic = "checked" if user.IsPublic else "",
-        ) 
+    nickname = user.NickName.encode('utf-8') if user.NickName else ""
+    comment = user.Comment.encode('utf-8') if user.Comment else ""
+    ispublic = "checked" if user.IsPublic else ""
+    url = "/user/" + username
+    url_label = "http://" + environ['HTTP_HOST'] + url
+    body = tpl.substitute(locals())
     html = main_tpl.substitute(header=header, body=body)
     status = '200 OK'
     response_headers = [('Content-type', 'text/html')]
