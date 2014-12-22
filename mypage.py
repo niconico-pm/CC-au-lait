@@ -54,6 +54,7 @@ def get_handler(environ, start_response):
     tpl = content.get_template("mypage.tpl")
     username = auth.Authenticator.get_username(environ)
     nickname = db.User.select(UserName=username).one().NickName
+    name = nickname.encode('utf-8') if nickname else username
     count = get_count(environ)
     getter = Getter(username)
     if getter.set_count(count):
@@ -65,7 +66,7 @@ def get_handler(environ, start_response):
         date = ""
         table = "<p>スコアデータがありません。</p>"
     getter.close()
-    body = tpl.substitute(name=nickname.encode('utf-8') if nickname else username, link=link, date=date, table=table)
+    body = tpl.substitute(locals())
     html = main_tpl.substitute(header=header, body=body)
     status = '200 OK'
     response_headers = [('Content-type', 'text/html')]
