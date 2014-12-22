@@ -3,7 +3,7 @@ from lib import auth, content, db
 from lib.score import ScoreGetter
 import common
 
-medal = ['fail', 'Clear', 'F.C.', 'P']
+medal = ['FAILED', 'CLEAR', 'FC', 'P']
 def grade(score):
     if   score >= 950000: return 'AAA'
     elif score >= 850000: return 'AA'
@@ -22,9 +22,9 @@ class Getter(ScoreGetter):
             table += '<td class="music_title">' + music[1].encode('utf-8') + "</td>"
             if len(scores) > 0:
                 for dif in range(0, 3):
-                    table += '<td>' + (str(scores[dif][0]) if scores[dif][0] else "no play") + '</td>'
-                    table += '<td>' + (medal[scores[dif][1]] if scores[dif][1] else "") + '</td>'
-                    table += '<td>' + (grade(scores[dif][0]) if scores[dif][0] else "") + '</td>'
+                    table += '<td>' + (str(scores[dif][0]) if not scores[dif][0] is None else "no play") + '</td>'
+                    table += '<td>' + (medal[scores[dif][1]] if not scores[dif][1] is None else "") + '</td>'
+                    table += '<td>' + (grade(scores[dif][0]) if not scores[dif][0] is None else "") + '</td>'
             else:
                 table += "<td colspan=9 align=center>! --- No Data --- !</td>"
             table += "</tr>\n"
