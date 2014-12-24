@@ -24,5 +24,6 @@ WSGIPythonPath /path/to/basedir
 
 [mysql -u root]
 Create User 'httpd'@'localhost' Identified By 'Password';
-Source /path/to/basedir/docs/database.txt
-Load Data Infile "/path/to/basedir/docs/music_data.csv" Into Table music Fields Terminated By ',' Enclosed By '"';
+Source /path/to/basedir/docs/database.sql
+Load Data Infile "/path/to/basedir/docs/music_init.csv" Into Table music Fields Terminated By ',' Enclosed By '"';
+Load Data Infile "/path/to/basedir/docs/tracks_init.csv" Into Table tracks Fields Terminated By ',' Enclosed By '"' (MusicID, Difficulty, Level);
