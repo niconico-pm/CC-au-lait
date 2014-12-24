@@ -23,29 +23,30 @@ body {
     color: #4183c4;
 }
 
-.header-wrapper {
+#header .header-wrapper {
     width: 890px;
     height: 22px;
     margin: 0 auto;
 }
 
-.title {
+#header .title {
     float: left;
 }
     
-.menu {
+#header .menu {
     float: right;
 }
-
-/* .menu a{ */
-/*     border: solid 1px; */
-/*     border-color: gray; */
-/*     border-radius: 3px; */
-/*     background-color: white; */
-/*     box-shadow: 1px 1px 2px gray; */
-/* } */
 
 #content {
     width: 890px;
     margin: 0 auto 40px;
+}
+
+#content a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+#content a:hover {
+    text-decoration: underline;
 }
