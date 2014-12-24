@@ -10,7 +10,7 @@ import app
 application = Selector({
         '/css' : StaticResponser('html/css', 'text/css'),
         '/js' : StaticResponser('html/js', 'application/javascript'),
-        '/image' : StaticResponser('html/image', 'image/png'),
+        '/img' : StaticResponser('html/img', 'image/png'),
         '/favicon.ico': FileResponser('html/favicon.ico', 'image/x-icon'),
         '': app.application,
         })

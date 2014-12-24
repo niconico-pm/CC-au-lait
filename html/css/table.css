@@ -37,11 +37,11 @@ table.tablesorter tbody tr.odd td {
 }
 
 table.tablesorter thead tr .headerSortUp {
-    background-image: url(/image/table/asc.png);
+    background-image: url(/img/table/asc.png);
 }
 
 table.tablesorter thead tr .headerSortDown {
-    background-image: url(/image/table/desc.png);
+    background-image: url(/img/table/desc.png);
 }
 
 table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
