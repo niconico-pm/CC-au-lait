@@ -8,7 +8,7 @@ class MyHTMLParser(HTMLParser):
         self.nowtag = ''
         self.nowattr = ''
         self.musiclist = []
-        self.music = [None, ''] # ID, 曲名
+        self.music = [None] # ID
         self.level = [None] * 3 # Light, Medium, beast
         self.inmusicarea = False
         HTMLParser.__init__(self)
@@ -17,10 +17,8 @@ class MyHTMLParser(HTMLParser):
         if self.inmusicarea:
             for name, value in self.nowattr:
                 if self.nowtag == 'img':
-                    self.music[0] = value.split('/')[-1].split('.')[0]
+                    self.music = value.split('/')[-1].split('.')[0]
                 if name == 'class':
-                    if value == 'music_tit':
-                        self.music[1] += data
                     if value == 'level_b':
                         self.level[0] = data
                     if value == 'level_n':
@@ -40,8 +38,7 @@ class MyHTMLParser(HTMLParser):
     def handle_endtag(self, tag):
         if self.inmusicarea:
             if tag == 'li':
-                self.musiclist.append((tuple(self.music), tuple(self.level)))
-                self.music[1] = ''
+                self.musiclist.append((self.music, tuple(self.level)))
             if tag == 'ul':
                 self.inmusicarea = False
 
@@ -64,5 +61,7 @@ print musiclist
 
 f = open('musiclist.csv', 'w')
 for music in musiclist:
-    f.write(str(music[0][0]) + "," + music[0][1] + "," + music[1][0] + "," + music[1][1] + "," + music[1][2] + "\n")
+    f.write(str(music[0]) + ",0," + music[1][0] + "\n")
+    f.write(str(music[0]) + ",1," + music[1][1] + "\n")
+    f.write(str(music[0]) + ",2," + music[1][2] + "\n")
 f.close()
