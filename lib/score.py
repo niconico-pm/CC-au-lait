@@ -94,7 +94,7 @@ class ScoreParser(HTMLParser):
     def __init__(self):
         self.nowtag = ''
         self.nowattr = ''
-        self.scorelist = []
+        self.scoredata = []
         self.music = [None, '']
         self.score = [None] * 3
         self.medal = [None] * 3
@@ -156,7 +156,7 @@ class ScoreParser(HTMLParser):
             if self.inscorearea:
                 self.scorearea_depth -= 1
                 if self.scorearea_depth == 0:
-                    self.scorelist.append((tuple(self.music),tuple(self.score),tuple(self.medal)))
+                    self.scoredata.append((tuple(self.music),tuple(self.score),tuple(self.medal)))
                     self.inscorearea = False
                     self.music[0] = None
                     self.music[1] = ''
@@ -164,5 +164,5 @@ class ScoreParser(HTMLParser):
             self.nowtag = ''
             self.nowattr = ''
 
-    def get_scorelist(self):
-        return self.scorelist
+    def get_scoredata(self):
+        return self.scoredata

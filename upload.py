@@ -25,10 +25,10 @@ def post_handler(environ, start_response):
         try:
             parser = ScoreParser()
             parser.feed(scorehtml)
-            scorelist = parser.get_scorelist()
-            if len(scorelist) <= 0: raise
+            scoredata = parser.get_scoredata()
+            if len(scoredata) <= 0: raise
             updater = ScoreUpdater()
-            updater.update_data(username, scorelist)
+            updater.update_data(username, scoredata)
         except:
             if updater:
                 updater.rollback()
