@@ -82,7 +82,7 @@ class ScoreGetter(object):
         self.musiclist = result
     
     def get_score(self, musicid):
-        self.con.cur.execute('select Score, Medal from score where UID = %s and MusicId = %s and UpCount = %s order by Difficulty', (self.UID, musicid, self.count))
+        self.con.cur.execute('select Score, Medal, Level from score as s inner join tracks as t on UID = %s and s.MusicId = %s and UpCount = %s and s.MusicID = t.MusicID and s.Difficulty = t.Difficulty order by s.Difficulty', (self.UID, musicid, self.count))
         result = self.con.cur.fetchall()
         return result
     

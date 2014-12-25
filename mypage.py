@@ -3,8 +3,8 @@ from lib import auth, content, db
 from lib.score import ScoreGetter
 import common
 
-medal = ['FAILED', 'CLEAR', 'FC', 'P']
-def grade(score):
+get_medal = ['FAILED', 'CLEAR', 'FC', 'P']
+def get_grade(score):
     if   score >= 950000: return 'AAA'
     elif score >= 850000: return 'AA'
     elif score >= 700000: return 'A'
@@ -21,12 +21,13 @@ class Getter(ScoreGetter):
             music, scores = data
             table += '<td class="music-title">' + music[1].encode('utf-8') + "</td>"
             if len(scores) > 0:
-                for dif in range(0, 3):
-                    table += '<td>' + (str(scores[dif][0]) if not scores[dif][0] is None else "no play") + '</td>'
-                    table += '<td>' + (medal[scores[dif][1]] if not scores[dif][1] is None else "") + '</td>'
-                    table += '<td>' + (grade(scores[dif][0]) if not scores[dif][0] is None else "") + '</td>'
+                for scr, mdl, lvl in scores:
+                    table += '<td>' + (str(scr) if not scr is None else "no play") + '</td>'
+                    table += '<td>' + (get_medal[mdl] if not mdl is None else "") + '</td>'
+                    table += '<td>' + (get_grade(scr) if not scr is None else "") + '</td>'
+                    table += '<td>' + (str(lvl) if not lvl is None else "") + '</td>'
             else:
-                table += "<td colspan=9 align=center>! --- No Data --- !</td>"
+                table += "<td colspan=12 align=center>--- No Data ---</td>"
             table += "</tr>\n"
         return table
 

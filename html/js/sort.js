@@ -1,4 +1,6 @@
-$(document).ready(function() { 
-	$("#score").tablesorter(); 
-    } 
+$(document).ready(function() {
+	$("#score").tablesorter({
+		sortStable : true,
+	});
+    }
 );
