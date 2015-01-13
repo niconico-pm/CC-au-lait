@@ -50,3 +50,8 @@ body {
 #content a:hover {
     text-decoration: underline;
 }
+
+#content img.explain {
+    border: solid 1px;
+    width: 50%;
+}
