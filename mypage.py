@@ -3,19 +3,98 @@ from lib import auth, content, db
 from lib.score import ScoreGetter
 import common
 
-get_medal = ['FAILED', 'CLEAR', 'FC', 'P']
+medallabel = ['FAILED', 'CLEAR', 'FC', 'P']
+gradelabel = ['D', 'C', 'B', 'A', 'AA', 'AAA']
 def get_grade(score):
-    if   score >= 950000: return 'AAA'
-    elif score >= 850000: return 'AA'
-    elif score >= 700000: return 'A'
-    elif score >= 600000: return 'B'
-    elif score >= 500000: return 'C'
-    else                : return 'D'
+    if   score >= 950000: return 5
+    elif score >= 850000: return 4
+    elif score >= 700000: return 3
+    elif score >= 600000: return 2
+    elif score >= 500000: return 1
+    else                : return 0
+
+def td(cont):
+    return '<td>' + cont + '</td>'
 
 class Getter(ScoreGetter):
-    def make_table(self):
+    def init_scoredata(self):
+        self.scoredata = self.get_scoredata()
+
+    def make_totaltable(self):
         table = ""
-        scoredata = self.get_scoredata()
+        scoredata = self.scoredata
+        musicnum = 0
+        playednum = [0] * 4
+        grade = [[0] * 7, [0] * 7, [0] * 7, [0] * 7]
+        medal = [[0] * 5, [0] * 5, [0] * 5, [0] * 5]
+        score = [0L] * 4
+        for data in scoredata:
+            _, scores = data
+            musicnum += 1
+            if len(scores) > 0:
+                for dif, (scr, mdl, _) in enumerate(scores):
+                    if scr is None:
+                        grd = mdl = -1
+                        scr = 0
+                    else:
+                        grd = get_grade(scr)
+                        playednum[dif] += 1
+                        playednum[3] += 1
+                    grade[dif][grd] += 1
+                    medal[dif][mdl] += 1
+                    score[dif] += scr
+                    grade[3][grd] += 1
+                    medal[3][mdl] += 1
+                    score[3] += scr
+            else:
+                for dif in range(3):
+                    grade[dif][-1] += 1
+                    medal[dif][-1] += 1
+                    grade[3][-1] += 1
+                    medal[3][-1] += 1
+        mygradelabel = list(gradelabel)
+        mygradelabel.reverse()
+        mygradelabel += ['no play']
+        for i, grdlbl in enumerate(mygradelabel):
+            grd = 5 - i
+            table += '<tr>'
+            if i == 0: table += '<td rowspan="7">Grade</td>'
+            table += td(grdlbl)
+            for dif in range(4):
+                table += td(str(grade[dif][grd]) + '/' + (str(musicnum) if dif != 3 else str(musicnum * 3)))
+            table += '</tr>'
+        mymedallabel = list(medallabel)
+        mymedallabel.reverse()
+        mymedallabel += ['no play']
+        for i, mdllbl in enumerate(mymedallabel):
+            mdl = 3 - i
+            table += '<tr>'
+            if i == 0: table += '<td rowspan="5">Medal</td>'
+            table += td(mdllbl)
+            for dif in range(4):
+                table += td(str(medal[dif][mdl]) + '/' + (str(musicnum) if dif != 3 else str(musicnum * 3)))
+            table += '</tr>'
+        table += '<tr>'
+        table += '<td rowspan="3">score</td>'
+        table += td('合計スコア')
+        for dif in range(4):
+            table += td(str(score[dif]))
+        table += '</tr>'
+        table += '<tr>'
+        table += td('プレイ済み平均')
+        for dif in range(4):
+            table += td(str(score[dif]/playednum[dif]))
+        table += '</tr>'
+        table += '<tr>'
+        table += td('全曲平均')
+        for dif in range(4):
+            table += td(str(score[dif]/(musicnum if dif != 3 else musicnum * 3)))
+        table += '</tr>'
+        return table
+
+    def make_scoretable(self):
+        table = ""
+        scoredata = self.scoredata
         for data in scoredata:
             table += "<tr>"
             music, scores = data
@@ -23,8 +102,8 @@ class Getter(ScoreGetter):
             if len(scores) > 0:
                 for scr, mdl, lvl in scores:
                     table += '<td>' + (str(scr) if not scr is None else "no play") + '</td>'
-                    table += '<td>' + (get_medal[mdl] if not mdl is None else "") + '</td>'
-                    table += '<td>' + (get_grade(scr) if not scr is None else "") + '</td>'
+                    table += '<td>' + (medallabel[mdl] if not mdl is None else "") + '</td>'
+                    table += '<td>' + (gradelabel[get_grade(scr)] if not scr is None else "") + '</td>'
                     table += '<td>' + (str(lvl) if not lvl is None else "") + '</td>'
             else:
                 table += "<td colspan=12 align=center>--- No Data ---</td>"
@@ -59,13 +138,16 @@ def get_handler(environ, start_response):
     count = get_count(environ)
     getter = Getter(username)
     if getter.set_count(count):
+        getter.init_scoredata()
         link = make_link(count, getter.maxcount)
         date = str(getter.get_date())
-        table = getter.make_table()
+        totaltable = getter.make_totaltable()
+        scoretable = getter.make_scoretable()
     else:
         link = ""
         date = ""
-        table = "<p>スコアデータがありません。</p>"
+        totaltable = "<p>データがありません。</p>"
+        scoretable = "<p>データがありません。</p>"
     getter.close()
     body = tpl.substitute(locals())
     html = main_tpl.substitute(header=header, body=body)
