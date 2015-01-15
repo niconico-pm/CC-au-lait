@@ -36,11 +36,12 @@ body {
 
 #header .title a {
 	float: left;
+	padding-top: 0;
 }
 
 .tweet-button{
 	float: left;
-	padding: 4px 4px;
+	padding: 1px 4px;
 }
     
 #header .menu {
