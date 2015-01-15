@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys, os
 basedir = os.path.dirname(os.path.abspath(__file__))
-#sys.path.append(basedir)
+sys.path.append(basedir)
 os.chdir(basedir)
 
 from lib.middleware import Selector, StaticResponser, FileResponser
