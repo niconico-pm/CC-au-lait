@@ -40,13 +40,16 @@ def get_handler(environ, start_response):
                 name = nickname.encode('utf-8') if nickname else username
                 getter = mypage.Getter(username)
                 if getter.set_count(count):
+                    getter.init_scoredata()
                     link = make_link(count, getter.maxcount, username)
                     date = str(getter.get_date())
-                    table = getter.make_table()
+                    totaltable = getter.make_totaltable()
+                    scoretable = getter.make_scoretable()
                 else:
                     link = ""
                     date = ""
-                    table = "<p>スコアデータがありません。</p>"
+                    totaltable = "<p>データがありません。</p>"
+                    scoretable = "<p>データがありません。</p>"
                 getter.close()
                 body = tpl.substitute(locals())
             else:
