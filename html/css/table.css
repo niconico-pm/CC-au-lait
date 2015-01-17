@@ -36,6 +36,10 @@ table.tablesorter tbody tr.odd td {
     background-color:#F0F0F6;
 }
 
+table.tablesorter thead tr .header {
+	background-image: url(/img/table/bg.png);
+}
+
 table.tablesorter thead tr .headerSortUp {
     background-image: url(/img/table/asc.png);
 }
@@ -46,4 +50,20 @@ table.tablesorter thead tr .headerSortDown {
 
 table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
     background-color: #8dbdd8;
+}
+
+table colgroup col.music-title {
+	width: auto;
+}
+table colgroup col.score {
+	width: 59px;
+}
+table colgroup col.medal {
+	width: 46px;
+}
+table colgroup col.grade {
+	width: 45px;
+}
+table colgroup col.level {
+	width: 35px;
 }

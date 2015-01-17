@@ -23,15 +23,22 @@ ${totaltable}
 </table>
 <h3>スコアデータ</h3>
 <table id="score" class="tablesorter">
+<!-- 曲名 -->
+<colgroup><col class="music-title"></colgroup>
+<!-- Light -->
+<colgroup><col class="score"><col class="medal"><col class="grade"><col class="level"></colgroup>
+<!-- Medium -->
+<colgroup><col class="score"><col class="medal"><col class="grade"><col class="level"></colgroup>
+<!-- Beast -->
+<colgroup><col class="score"><col class="medal"><col class="grade"><col class="level"></colgroup>
 <thead>
 <tr>
-  <th></th>
+  <th rowspan="2">曲名</th>
   <th colspan="4">Light</th>
   <th colspan="4">Medium</th>
   <th colspan="4">Beast</th>
 </tr>
 <tr>
-  <th>曲名</th>
   <th>SCORE</th>
   <th>MDL</th>
   <th>GRD</th>
