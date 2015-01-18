@@ -56,7 +56,6 @@ score(
 	Medal		int,
 
 	Primary Key(UID, MusicID, Difficulty, UpCount),
-	Foreign Key(UID) References user(UID),
-	Foreign Key(MusicID) References music(MusicID),
-	Foreign Key(UpCount) References updation(Count)
+	Foreign Key(UID, UpCount) References updation(UID, Count),
+	Foreign Key(MusicID) References music(MusicID)
 ) ENGINE=InnoDB;
