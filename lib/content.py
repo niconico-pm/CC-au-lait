@@ -9,7 +9,10 @@ TEMPLATEDIR = os.path.join(BASEDIR, "html")
 
 def get_file(directory, filename):
     path = os.path.join(directory, filename)
-    return open(path, 'r').read()
+    f = open(path)
+    content = f.read()
+    f.close()
+    return content
 
 def get_html(filename):
     return get_file(HTMLDIR, filename)

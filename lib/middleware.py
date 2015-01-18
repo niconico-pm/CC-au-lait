@@ -2,6 +2,7 @@
 from wsgiref import util
 import os
 import auth
+from content import BASEDIR, get_file
 
 def notFound(environ, start_response):
     start_response('404 NotFound', [('Content-type', 'text/html')])
@@ -44,11 +45,9 @@ class Selector(object):
 
 class FileResponser(object):
     def __init__(self, filename, mime_type):
-        f = open(filename, "rb")
-        self.content = f.read()
+        self.content = get_file(BASEDIR, filename)
         self.content_length = len(self.content)
         self.mime_type = mime_type
-        f.close()
     def __call__(self, environ,start_response):
         status = '200 OK'
         response_headers = [('Content-type', self.mime_type),
@@ -71,9 +70,8 @@ class StaticResponser(object):
         filename = environ['PATH_INFO'][1:]
         filepath = os.path.join(self.path, filename)
         try:
-            content = open(filepath, 'r').read()
+            content = get_file(BASEDIR, filepath)
         except IOError:
-#            content = filepath
             return self.notfound(environ, start_response)
 
         status = '200 OK'
