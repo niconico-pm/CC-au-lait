@@ -83,7 +83,10 @@ class Getter(ScoreGetter):
         table += '<tr>'
         table += td('プレイ済み平均')
         for dif in range(4):
-            table += td(str(score[dif]/playednum[dif]))
+            if playednum[dif] != 0:
+                table += td(str(score[dif]/playednum[dif]))
+            else:
+                table += td('0')
         table += '</tr>'
         table += '<tr>'
         table += td('全曲平均')
