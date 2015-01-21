@@ -72,7 +72,7 @@ class ScoreGetter(object):
             return True
 
     def get_date(self):
-        self.con.cur.execute('select Date from updation where Count = %s', (self.count,))
+        self.con.cur.execute('select Date from updation where UID = %s and Count = %s', (self.UID, self.count))
         result = self.con.cur.fetchone()
         return result[0]
 
