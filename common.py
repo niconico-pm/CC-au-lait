@@ -3,12 +3,17 @@ from lib import auth, content
 
 def header_html(environ):
     headertpl = content.get_template("header.tpl")
+    urlbase = "http://" + environ['HTTP_HOST']
     if auth.Authenticator.authenticated(environ):
         username = auth.Authenticator.get_username(environ)
         menu = content.get_template("menu_loggedin.tpl").substitute(username=username)
+        url = urlbase + "/user/" + username
+        data_count = 'data-count="none" '
     else:
         menu = content.get_html("menu_loggedout.html")
-    header = headertpl.substitute(menu=menu)
+        url = urlbase
+        data_count = ""
+    header = headertpl.substitute(locals())
     return header
 
 def redirect(environ, start_response, location='/'):
