@@ -2,7 +2,7 @@
 from lib.middleware import Selector
 from lib.auth import Authenticator
 from lib import content
-import common, login, register, setting, upload, mypage, user
+import common, login, register, setting, upload, mypage, user, userlist
 
 table = dict()
 
@@ -24,5 +24,6 @@ table['/setting'] = setting.application
 table['/upload'] = upload.application
 table['/mypage'] = mypage.application
 table['/user'] = user.application
+table['/userlist'] = userlist.application
 
 application = Authenticator(Selector(table))
