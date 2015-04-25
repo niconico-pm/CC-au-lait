@@ -8,6 +8,11 @@
 <div style="height: 22px"><div style="float: right">更新日:${date}</div></div>
 <h3>総合データ</h3>
 <table id="total" class="tablesorter">
+<colgroup><col><col></colgroup>
+<colgroup class="light"><col></colgroup>
+<colgroup class="medium"><col></colgroup>
+<colgroup class="beast"><col></colgroup>
+<colgroup><col><colgroup>
 <thead>
 <tr>
   <th colspan="2"></th>
@@ -26,11 +31,11 @@ ${totaltable}
 <!-- 曲名 -->
 <colgroup><col class="music-title"></colgroup>
 <!-- Light -->
-<colgroup><col class="score"><col class="medal"><col class="grade"><col class="level"></colgroup>
+<colgroup class="light"><col class="score"><col class="medal"><col class="grade"><col class="level"></colgroup>
 <!-- Medium -->
-<colgroup><col class="score"><col class="medal"><col class="grade"><col class="level"></colgroup>
+<colgroup class="medium"><col class="score"><col class="medal"><col class="grade"><col class="level"></colgroup>
 <!-- Beast -->
-<colgroup><col class="score"><col class="medal"><col class="grade"><col class="level"></colgroup>
+<colgroup class="beast"><col class="score"><col class="medal"><col class="grade"><col class="level"></colgroup>
 <thead>
 <tr>
   <th rowspan="2">曲名</th>

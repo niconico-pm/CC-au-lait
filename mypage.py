@@ -58,7 +58,7 @@ class Getter(ScoreGetter):
         for i, grdlbl in enumerate(mygradelabel):
             grd = 5 - i
             table += '<tr>'
-            if i == 0: table += '<td rowspan="7">Grade</td>'
+            if i == 0: table += '<th rowspan="7">Grade</th>'
             table += td(grdlbl)
             for dif in range(4):
                 table += td(str(grade[dif][grd]) + '/' + (str(musicnum) if dif != 3 else str(musicnum * 3)))
@@ -69,13 +69,13 @@ class Getter(ScoreGetter):
         for i, mdllbl in enumerate(mymedallabel):
             mdl = 3 - i
             table += '<tr>'
-            if i == 0: table += '<td rowspan="5">Medal</td>'
+            if i == 0: table += '<th rowspan="5">Medal</th>'
             table += td(mdllbl)
             for dif in range(4):
                 table += td(str(medal[dif][mdl]) + '/' + (str(musicnum) if dif != 3 else str(musicnum * 3)))
             table += '</tr>'
         table += '<tr>'
-        table += '<td rowspan="3">score</td>'
+        table += '<th rowspan="3">score</th>'
         table += td('合計スコア')
         for dif in range(4):
             table += td(str(score[dif]))
@@ -104,12 +104,12 @@ class Getter(ScoreGetter):
             table += '<td class="music-title">' + music[1].encode('utf-8') + "</td>"
             if len(scores) > 0:
                 for scr, mdl, lvl in scores:
-                    table += '<td>' + (str(scr) if not scr is None else "no play") + '</td>'
+                    table += '<td>' + (str(scr) if not scr is None else "") + '</td>'
                     table += '<td>' + (medallabel[mdl] if not mdl is None else "") + '</td>'
                     table += '<td>' + (gradelabel[get_grade(scr)] if not scr is None else "") + '</td>'
                     table += '<td>' + (str(lvl) if not lvl is None else "") + '</td>'
             else:
-                table += "<td colspan=12 align=center>--- No Data ---</td>"
+                table += "<td></td>" * 12
             table += "</tr>\n"
         return table
 

@@ -9,10 +9,14 @@ table.tablesorter {
 }
 
 table.tablesorter thead tr th, table.tablesorter tfoot tr th {
-    background-color: #e6EEEE;
+    background-color: rgba(230, 238, 238, 0.8);
     border: 1px solid #FFF;
     font-size: 8pt;
     padding: 4px;
+}
+
+table.tablesorter tbody th {
+    background-color: rgba(230, 238, 238, 0.8);
 }
 
 table.tablesorter thead tr .header {
@@ -24,16 +28,26 @@ table.tablesorter thead tr .header {
 table.tablesorter tbody td {
     color: #3D3D3D;
     padding: 4px;
-    background-color: #FFF;
+    background-color: rgba(255, 255, 255, 0.8);
     vertical-align: top;
+}
+
+table.tablesorter tbody tr:nth-child(odd) td {
+    background-color: rgba(240, 240, 240, 0.8);
 }
 
 table.tablesorter tbody td.music-title{
     text-align: left;
 }
 
-table.tablesorter tbody tr.odd td {
-    background-color:#F0F0F6;
+table.tablesorter colgroup.light {
+    background: #b0b0ff;
+}
+table.tablesorter colgroup.medium {
+    background: #ffffb0;
+}
+table.tablesorter colgroup.beast {
+    background: #ffb0b0;
 }
 
 table.tablesorter thead tr .header {
