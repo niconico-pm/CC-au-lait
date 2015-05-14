@@ -8,7 +8,7 @@ def td(data):
 def make_userlist_table():
     con = db.SimpleConnection()
     cur = con.cur
-    cur.execute("select UserName, NickName, Comment from user where IsPublic = 1");
+    cur.execute("select UserName, NickName, Comment from user where IsPublic = 1 order by LastUpdate desc, UID");
     result = cur.fetchall()
     con.close()
 

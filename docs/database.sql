@@ -12,6 +12,7 @@ user(
 	IsPublic	boolean NOT NULL default False,
 	PassHash	char(128) NOT NULL,
 	PassSalt	char(32) NOT NULL,
+	LastUpdate	timestamp NOT NULL default '0000-00-00 00:00:00',
 
 	Primary Key(UID),
 	Index (UserName)
@@ -59,3 +60,8 @@ score(
 	Foreign Key(UID, UpCount) References updation(UID, Count),
 	Foreign Key(MusicID) References music(MusicID)
 ) ENGINE=InnoDB;
+
+Create Trigger
+update_user_timestamp
+After Insert On updation For Each Row
+Update user Set LastUpdate = New.Date Where user.UID = New.UID;
