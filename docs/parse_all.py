@@ -13,9 +13,9 @@ class Score(object):
         elif self.score >= 500000: return 1
         else                     : return 0
 
-    def __init__(self, title, musicid, level, score, medal, ):
-        self.title = title
+    def __init__(self, musicid, title, level, score, medal, ):
         self.musicid = musicid
+        self.title = title
         self.level = level
         self.score = score
         self.medal = medal
@@ -24,13 +24,15 @@ class Score(object):
             + str(self.score)  + " " + self.gradelabel[self.get_grade()] \
             + " " + self.medallabel[self.medal]
     def toCSV(self):
-        return ",".join([self.title, str(self.musicid), str(self.level), str(self.score), str(self.medal)])
+        return ",".join([str(self.musicid), self.title, str(self.level), str(self.score), str(self.medal)])
 
 class MyHTMLParser(HTMLParser):
     def __init__(self):
         self.nowtag = ''
         self.nowattr = ''
         self.scorelist = []
+        self.idflag = False # idを持ってくる時に使うフラグ
+        self.musicid = None
         self.title = ''
         self.score = [None] * 4
         self.medal = [None] * 4
@@ -79,6 +81,16 @@ class MyHTMLParser(HTMLParser):
                         self.inscorearea = True
                         self.score = [None] * 4
                         self.medal = [None] * 4
+        if tag == 'img':
+            self.idflag = False
+            for name, value in attr:
+                if name == 'class' and value == 'mymusic_jk':
+                    self.idflag = True
+                    break
+            if self.idflag:
+                for name, value in attr:
+                    if name == 'src':
+                        self.musicid = value.split('/')[-1].split('.')[0]
 
     def handle_endtag(self, tag):
         if tag == 'div':
@@ -87,8 +99,8 @@ class MyHTMLParser(HTMLParser):
                 if self.scorearea_depth == 0:
                     for var in range(0, 4):
                         if self.score[var] != None:
-                            # musicidわかんないからとりあえずNone
-                            score = Score(self.title, None, var,self.score[var],self.medal[var])
+                            #             ID  , title     , dif, score          , medal
+                            score = Score(self.musicid, self.title, var, self.score[var], self.medal[var])
                             self.scorelist.append(score)
                     self.inscorearea = False
                     self.title = ''
@@ -114,6 +126,7 @@ def print_csv_from(filename):
     print "曲名,難易度,スコア,メダル"
     for score in scorelist:
         # ↓これめっちゃ綺麗でしょ
+        # せやなW
         print score.toCSV() 
 
 if __name__ == '__main__' :
