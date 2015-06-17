@@ -1,7 +1,30 @@
 # -*- coding: utf-8 -*-
-
 from HTMLParser import HTMLParser
-import urllib2
+
+class Score(object):
+    levellabel = ('Light', 'Medium', 'Beast', 'Nightmare')
+    medallabel = ('FAILED', 'CLEAR', 'FC', 'P')
+    gradelabel = ('D', 'C', 'B', 'A', 'AA', 'AAA')
+    def get_grade(self):
+        if   self.score >= 950000: return 5
+        elif self.score >= 850000: return 4
+        elif self.score >= 700000: return 3
+        elif self.score >= 600000: return 2
+        elif self.score >= 500000: return 1
+        else                     : return 0
+
+    def __init__(self, title, musicid, level, score, medal, ):
+        self.title = title
+        self.musicid = musicid
+        self.level = level
+        self.score = score
+        self.medal = medal
+    def __repr__(self):
+        return self.title + "(" + self.levellabel[self.level] + ")" + ": " \
+            + str(self.score)  + " " + self.gradelabel[self.get_grade()] \
+            + " " + self.medallabel[self.medal]
+    def toCSV(self):
+        return ",".join([self.title, str(self.musicid), str(self.level), str(self.score), str(self.medal)])
 
 class MyHTMLParser(HTMLParser):
     def __init__(self):
@@ -64,7 +87,9 @@ class MyHTMLParser(HTMLParser):
                 if self.scorearea_depth == 0:
                     for var in range(0, 4):
                         if self.score[var] != None:
-                            self.scorelist.append((self.title,var,self.score[var],self.medal[var]))
+                            # musicidわかんないからとりあえずNone
+                            score = Score(self.title, None, var,self.score[var],self.medal[var])
+                            self.scorelist.append(score)
                     self.inscorearea = False
                     self.title = ''
         if tag == self.nowtag:
@@ -74,30 +99,25 @@ class MyHTMLParser(HTMLParser):
     def get_scorelist(self):
         return self.scorelist
 
-#----------------------Light,Medium,Beast------------------------------
-f = open('sample_beast_lmb.html', 'r')
-allLines = f.read()
-f.close()
 
-parser = MyHTMLParser()
-parser.feed(allLines)
+# --------- ファイル読み込んでCSVを吐く ---------
+def print_csv_from(filename):
+    f = open(filename, 'r')
+    allLines = f.read()
+    f.close()
 
-scorelist = parser.get_scorelist()
+    parser = MyHTMLParser()
+    parser.feed(allLines)
+    
+    scorelist = parser.get_scorelist()
 
-print "曲名,難易度,スコア,メダル"
-for score in scorelist:
-    print str(score[0]) + "," + str(score[1]) + "," + str(score[2]) + "," + str(score[3])
+    print "曲名,難易度,スコア,メダル"
+    for score in scorelist:
+        # ↓これめっちゃ綺麗でしょ
+        print score.toCSV() 
 
-
-#----------------------------Nightmare---------------------------------
-f1 = open('sample_beast_n.html', 'r')
-allLines1 = f1.read()
-f1.close()
-
-parser1 = MyHTMLParser()
-parser1.feed(allLines1)
-
-scorelist1 = parser1.get_scorelist()
-
-for score in scorelist1:
-    print str(score[0]) + "," + str(score[1]) + "," + str(score[2]) + "," + str(score[3])
+if __name__ == '__main__' :
+    # -------- Light,Medium,Beast -----
+    print_csv_from('sample_beast_lmb.html')
+    # -------- Nightmare --------------
+    print_csv_from('sample_beast_n.html')
