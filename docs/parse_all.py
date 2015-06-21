@@ -2,9 +2,16 @@
 from HTMLParser import HTMLParser
 
 class Score(object):
-    levellabel = ('Light', 'Medium', 'Beast', 'Nightmare')
-    medallabel = ('FAILED', 'CLEAR', 'FC', 'P')
-    gradelabel = ('D', 'C', 'B', 'A', 'AA', 'AAA')
+    diflabels = ('Light', 'Medium', 'Beast', 'Nightmare')
+    medallabels = ('FAILED', 'CLEAR', 'FC', 'P')
+    gradelabels = ('D', 'C', 'B', 'A', 'AA', 'AAA')
+    def __init__(self, musicid, title, dif, score, medal, level):
+        self.musicid = musicid
+        self.title = title
+        self.dif = dif
+        self.score = score
+        self.medal = medal
+        self.level = level
     def get_grade(self):
         if   self.score >= 950000: return 5
         elif self.score >= 850000: return 4
@@ -12,19 +19,43 @@ class Score(object):
         elif self.score >= 600000: return 2
         elif self.score >= 500000: return 1
         else                     : return 0
-
-    def __init__(self, musicid, title, level, score, medal, ):
-        self.musicid = musicid
-        self.title = title
-        self.level = level
-        self.score = score
-        self.medal = medal
+    def get_diflabel(self):
+        return self.diflabels[self.dif]
+    def get_gradelabel(self):
+        return self.gradelabels[self.get_grade()]
+    def get_medallabel(self):
+        return self.medallabels[self.medal]
     def __repr__(self):
-        return self.title + "(" + self.levellabel[self.level] + ")" + ": " \
-            + str(self.score)  + " " + self.gradelabel[self.get_grade()] \
-            + " " + self.medallabel[self.medal]
+        return "%d %s(%s): %d %s %s %s" % \
+            (self.musicid, self.title, self.get_diflabel(), self.score, self.get_gradelabel(), self.get_medallabel(), self.level)
+    def __str__(self):
+        return "%d %s %s %s" % (self.score, self.get_gradelabel(), self.get_medallabel(), self.level)
     def toCSV(self):
         return ",".join([str(self.musicid), self.title, str(self.level), str(self.score), str(self.medal)])
+
+class ScoreTable(object):
+    # tableにmusicidをkeyとする[l, m, b, n]のScoreのListを格納
+    # titlesにmusicidをkeyとして一番最初に来たtitleを格納
+    def __init__(self):
+        self.table = dict()
+        self.titles = dict()
+    def add(self, score):
+        if not self.table.has_key(score.musicid):
+            self.table[score.musicid] = [None] * 4
+            self.titles[score.musicid] = score.title
+        self.table[score.musicid][score.dif] = score
+    def add_list(self, scorelist):
+        for score in scorelist:
+            self.add(score)
+    def __repr__(self):
+        s = ""
+        for musicid, l in self.table.iteritems():
+            title = self.titles[musicid]
+            s += "%s(%s): " % (title[:15].ljust(10), musicid)
+            for score in l:
+                s += (str(score).rjust(20)+"\t") if not score is None else (" ".rjust(20) + "\t")
+            s += "\n"
+        return s
 
 class MyHTMLParser(HTMLParser):
     def __init__(self):
@@ -48,7 +79,7 @@ class MyHTMLParser(HTMLParser):
                         self.title += data
                     else:
                         if value == 'score_num':
-                            self.score[self.dif] = data
+                            self.score[self.dif] = int(data)
                         if value == 'perfect':
                             self.medal[self.dif] = 3
                         if value == 'fullcombo':
@@ -97,10 +128,10 @@ class MyHTMLParser(HTMLParser):
             if self.inscorearea:
                 self.scorearea_depth -= 1
                 if self.scorearea_depth == 0:
-                    for var in range(0, 4):
-                        if self.score[var] != None:
-                            #             ID  , title     , dif, score          , medal
-                            score = Score(self.musicid, self.title, var, self.score[var], self.medal[var])
+                    for dif in range(0, 4):
+                        if self.score[dif] != None:
+                            #             ID          , title     , dif, score          , medal          , level
+                            score = Score(self.musicid, self.title, dif, self.score[dif], self.medal[dif], None)
                             self.scorelist.append(score)
                     self.inscorearea = False
                     self.title = ''
@@ -112,8 +143,8 @@ class MyHTMLParser(HTMLParser):
         return self.scorelist
 
 
-# --------- ファイル読み込んでCSVを吐く ---------
-def print_csv_from(filename):
+# --------- ファイル読み込んでlistを吐く ---------
+def get_scorelist_from(filename):
     f = open(filename, 'r')
     allLines = f.read()
     f.close()
@@ -121,16 +152,21 @@ def print_csv_from(filename):
     parser = MyHTMLParser()
     parser.feed(allLines)
     
-    scorelist = parser.get_scorelist()
+    return parser.get_scorelist()
 
-    print "曲名,難易度,スコア,メダル"
+def print_csv(scorelist):
+    print "ID,曲名,難易度,スコア,メダル"
     for score in scorelist:
-        # ↓これめっちゃ綺麗でしょ
-        # せやなW
-        print score.toCSV() 
+        print score.toCSV()
 
 if __name__ == '__main__' :
     # -------- Light,Medium,Beast -----
-    print_csv_from('sample_beast_lmb.html')
+    sl = get_scorelist_from('sample_beast_lmb.html')
+    t = ScoreTable()
+    t.add_list(sl)
+    print t
     # -------- Nightmare --------------
-    print_csv_from('sample_beast_n.html')
+    sl = get_scorelist_from('sample_beast_n.html')
+    t = ScoreTable()
+    t.add_list(sl)
+    print t
