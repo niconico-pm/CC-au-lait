@@ -164,9 +164,7 @@ if __name__ == '__main__' :
     sl = get_scorelist_from('sample_beast_lmb.html')
     t = ScoreTable()
     t.add_list(sl)
-    print t
     # -------- Nightmare --------------
     sl = get_scorelist_from('sample_beast_n.html')
-    t = ScoreTable()
     t.add_list(sl)
     print t
