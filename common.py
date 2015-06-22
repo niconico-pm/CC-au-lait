@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from urllib import quote
+
 from lib import auth, content
 
 def header_html(environ):
@@ -7,7 +9,7 @@ def header_html(environ):
     if auth.Authenticator.authenticated(environ):
         username = auth.Authenticator.get_username(environ)
         menu = content.get_template("menu_loggedin.tpl").substitute(username=username)
-        url = urlbase + "/user/" + username
+        url = urlbase + "/user/" + quote(username)
         data_count = 'data-count="none" '
     else:
         menu = content.get_html("menu_loggedout.html")

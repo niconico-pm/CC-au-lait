@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from urllib import quote
+
 from lib import content, db
 import common
 
@@ -15,11 +17,11 @@ def make_userlist_table():
     table = ""
     for username, nickname, comment in result:
         usernamestr = username.encode('utf-8')
-        url = "/user/" + usernamestr
+        url = "/user/" + quote(usernamestr)
         table += "<tr>"
         table += td(nickname.encode('utf-8') if not nickname is None else usernamestr)
         table += td(comment.encode('utf-8') if not comment is None else "")
-        table += td('<a href="' + url + '">' + url + '</a>')
+        table += td('<a href="' + url + '">/user/' + usernamestr + '</a>')
         table += "</tr>"
     return table
 

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from urlparse import parse_qs
+from urllib import quote
 from lib import auth, content, db
 import common
 
@@ -12,7 +13,7 @@ def get_handler(environ, start_response, message=""):
     nickname = user.NickName.encode('utf-8') if user.NickName else ""
     comment = user.Comment.encode('utf-8') if user.Comment else ""
     ispublic = "checked" if user.IsPublic else ""
-    url = "/user/" + username
+    url = "/user/" + quote(username)
     url_label = "http://" + environ['HTTP_HOST'] + url
     body = tpl.substitute(locals())
     html = main_tpl.substitute(header=header, body=body)
