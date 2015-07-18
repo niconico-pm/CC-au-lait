@@ -2,62 +2,6 @@
 from HTMLParser import HTMLParser
 import db
 
-class Score(object):
-    diflabels = ('Light', 'Medium', 'Beast', 'Nightmare')
-    medallabels = ('FAILED', 'CLEAR', 'FC', 'P')
-    gradelabels = ('D', 'C', 'B', 'A', 'AA', 'AAA')
-    def __init__(self, musicid, title, dif, score, medal, level):
-        self.musicid = musicid
-        self.title = title
-        self.dif = dif
-        self.score = score
-        self.medal = medal
-        self.level = level
-    def get_grade(self):
-        if   self.score >= 950000: return 5
-        elif self.score >= 850000: return 4
-        elif self.score >= 700000: return 3
-        elif self.score >= 600000: return 2
-        elif self.score >= 500000: return 1
-        else                     : return 0
-    def get_diflabel(self):
-        return self.diflabels[self.dif]
-    def get_gradelabel(self):
-        return self.gradelabels[self.get_grade()]
-    def get_medallabel(self):
-        return self.medallabels[self.medal]
-    def __repr__(self):
-        return "%d %s(%s): %d %s %s %s" % \
-            (self.musicid, self.title, self.get_diflabel(), self.score, self.get_gradelabel(), self.get_medallabel(), self.level)
-    def __str__(self):
-        return "%d %s %s %s" % (self.score, self.get_gradelabel(), self.get_medallabel(), self.level)
-    def toCSV(self):
-        return ",".join([str(self.musicid), self.title, str(self.level), str(self.score), str(self.medal)])
-
-class ScoreTable(object):
-    # tableにmusicidをkeyとする[l, m, b, n]のScoreのListを格納
-    # titlesにmusicidをkeyとして一番最初に来たtitleを格納
-    def __init__(self):
-        self.table = dict()
-        self.titles = dict()
-    def add(self, score):
-        if not self.table.has_key(score.musicid):
-            self.table[score.musicid] = [None] * 4
-            self.titles[score.musicid] = score.title
-        self.table[score.musicid][score.dif] = score
-    def add_list(self, scorelist):
-        for score in scorelist:
-            self.add(score)
-    def __repr__(self):
-        s = ""
-        for musicid, l in self.table.iteritems():
-            title = self.titles[musicid]
-            s += "%s(%s): " % (title[:15].ljust(10), musicid)
-            for score in l:
-                s += (str(score).rjust(20)+"\t") if not score is None else (" ".rjust(20) + "\t")
-            s += "\n"
-        return s
-
 class ScoreUpdater(object):
     def __init__(self):
         self.con = db.SimpleConnection()
@@ -145,17 +89,15 @@ class ScoreGetter(object):
     def get_scoredata(self):
         self.init_musiclist()
         return [(music, self.get_score(music[0])) for music in self.musiclist]
-
+        
 class ScoreParser(HTMLParser):
     def __init__(self):
         self.nowtag = ''
         self.nowattr = ''
-        self.scorelist = []
-        self.idflag = False # idを持ってくる時に使うフラグ
-        self.musicid = None
-        self.title = ''
-        self.score = [None] * 4
-        self.medal = [None] * 4
+        self.scoredata = []
+        self.music = [None, '']
+        self.score = [None] * 3
+        self.medal = [None] * 3
         self.inscorearea = False
         self.dif = 0
         HTMLParser.__init__(self)
@@ -165,10 +107,10 @@ class ScoreParser(HTMLParser):
             for name, value in self.nowattr:
                 if name == 'class':
                     if value == 'mymusic_tit':
-                        self.title += data
+                        self.music[1] += data
                     else:
                         if value == 'score_num':
-                            self.score[self.dif] = int(data)
+                            self.score[self.dif] = data
                         if value == 'perfect':
                             self.medal[self.dif] = 3
                         if value == 'fullcombo':
@@ -191,42 +133,36 @@ class ScoreParser(HTMLParser):
                         self.dif = 1
                     if value == 'beast':
                         self.dif = 2
-                    if value == 'nightmare':
-                        self.dif = 3
-
             else:
                 for name, value in attr:
                     if name == 'class' and value == 'score_area':
                         self.scorearea_depth = 1
                         self.inscorearea = True
-                        self.score = [None] * 4
-                        self.medal = [None] * 4
+                        self.score = [None] * 3
+                        self.medal = [None] * 3
         if tag == 'img':
-            self.idflag = False
+            flag = False
             for name, value in attr:
                 if name == 'class' and value == 'mymusic_jk':
-                    self.idflag = True
+                    flag = True
                     break
-            if self.idflag:
+            if flag:
                 for name, value in attr:
                     if name == 'src':
-                        self.musicid = value.split('/')[-1].split('.')[0]
+                        self.music[0] = value.split('/')[-1].split('.')[0]
 
     def handle_endtag(self, tag):
         if tag == 'div':
             if self.inscorearea:
                 self.scorearea_depth -= 1
                 if self.scorearea_depth == 0:
-                    for dif in range(0, 4):
-                        if self.score[dif] != None:
-                            #             ID          , title     , dif, score          , medal          , level
-                            score = Score(self.musicid, self.title, dif, self.score[dif], self.medal[dif], None)
-                            self.scorelist.append(score)
+                    self.scoredata.append((tuple(self.music),tuple(self.score),tuple(self.medal)))
                     self.inscorearea = False
-                    self.title = ''
+                    self.music[0] = None
+                    self.music[1] = ''
         if tag == self.nowtag:
             self.nowtag = ''
             self.nowattr = ''
 
-    def get_scorelist(self):
-        return self.scorelist
+    def get_scoredata(self):
+        return self.scoredata
