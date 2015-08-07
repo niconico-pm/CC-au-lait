@@ -161,10 +161,10 @@ def print_csv(scorelist):
 
 if __name__ == '__main__' :
     # -------- Light,Medium,Beast -----
-    sl = get_scorelist_from('sample_beast_lmb.html')
+    sl = get_scorelist_from('sample_beast_page1.html')
     t = ScoreTable()
     t.add_list(sl)
     # -------- Nightmare --------------
-    sl = get_scorelist_from('sample_beast_n.html')
+    sl = get_scorelist_from('sample_beast_page2.html')
     t.add_list(sl)
     print t
