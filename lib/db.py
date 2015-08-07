@@ -2,8 +2,8 @@
 import MySQLdb
 
 MySQL_Host = "localhost"
-MySQL_User = "httpd"
-MySQL_PassWd = "Password"
+MySQL_User = "cc-au-lait"
+MySQL_PassWd = "rK9e7cTm"
 MySQL_Charset = "utf8"
 MySQL_DB = "BST_ScoreTool"
 
