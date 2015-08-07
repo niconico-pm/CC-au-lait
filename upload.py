@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from urlparse import parse_qs
 from lib import auth, content, db
-from lib.score import ScoreParser, ScoreUpdater
+from lib.score import ScoreParser, ScoreUpdater, ScoreTable, ScoreGetter
 import common
 
 def get_handler(environ, start_response, message=""):
@@ -23,16 +23,21 @@ def post_handler(environ, start_response):
         scorehtml = post['scorehtml'][0]
         updater = None
         try:
+            scoretable = ScoreTable()
             parser = ScoreParser()
             parser.feed(scorehtml)
-            scoredata = parser.get_scoredata()
-            if len(scoredata) <= 0: raise
+            scorelist = parser.get_scorelist()
+            if len(scorelist) <= 0: raise
+            scoregetter = ScoreGetter(username)
+            getterdata = scoregetter.get_scoredata()
+            scoretable.add_from_getterdata(getterdata)
+            scoretable.add_list(scorelist)
             updater = ScoreUpdater()
-            updater.update_data(username, scoredata)
+            updater.update_data(username, scoretable)
         except:
             if updater:
                 updater.rollback()
-            return get_handler(environ, start_response, "データの読み込みに失敗しました。申し訳ねえ。")
+            return get_handler(environ, start_response, "対応してない曲が含まれてる感じです。対応するまで待ってください。申し訳ねえ。")
         else:
             updater.close()
             return common.redirect(environ, start_response, '/mypage')

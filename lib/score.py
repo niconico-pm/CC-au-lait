@@ -7,8 +7,8 @@ class Score(object):
     medallabels = ('FAILED', 'CLEAR', 'FC', 'P')
     gradelabels = ('D', 'C', 'B', 'A', 'AA', 'AAA')
     def __init__(self, musicid, title, dif, score, medal, level):
-        self.musicid = musicid
-        self.title = title
+        self.musicid = (musicid if isinstance(musicid, long) else long(musicid))
+        self.title = (title if isinstance(title, str) else title.encode('utf-8'))
         self.dif = dif
         self.score = score
         self.medal = medal
@@ -48,6 +48,13 @@ class ScoreTable(object):
     def add_list(self, scorelist):
         for score in scorelist:
             self.add(score)
+    def add_from_getterdata(self, scoredata):
+        for music, tupled_scores in scoredata:
+            musicid, title = music
+            for dif, tupled_score in enumerate(tupled_scores):
+                if not tupled_score[0] is None:
+                    score = Score(musicid, title, dif, *tupled_score)
+                    self.add(score)
     def __repr__(self):
         s = ""
         for musicid, l in self.table.iteritems():
@@ -86,15 +93,17 @@ class ScoreUpdater(object):
         self.con.cur.execute('insert into updation(Count, UID) values(%s, %s)', (count, self.UID))
         self.count = count
 
-    def set_score(self, musicid, scores, medals):
+    def set_scores(self, musicid, scores):
         self.con.cur.executemany('insert into score values(%s, %s, %s, %s, %s, %s)',
-                                 [(self.UID, musicid, dif, self.count, scores[dif], medals[dif]) for dif in range(0, 3)])
-                                 
-    def update_data(self, username, scoredata):
+                                [(self.UID, musicid, dif, self.count, score.score if not score is None else None, score.medal if not score is None else None) for dif, score in enumerate(scores)])
+        # !!!!!!!!!for debug!!!!!!!!!!!!!
+        # print [(self.UID, musicid, dif, self.count, score.score if not score is None else None, score.medal if not score is None else None) for dif, score in enumerate(scores)]
+    
+    def update_data(self, username, scoretable):
         self.get_UID(username)
         self.start_updation()
-        for music, scores, medals in scoredata:
-            self.set_score(music[0], scores, medals)
+        for musicid, scores in scoretable.table.iteritems():
+            self.set_scores(musicid, scores)
 
 class ScoreGetter(object):
     def __init__(self, username):
@@ -141,7 +150,7 @@ class ScoreGetter(object):
         self.con.cur.execute('select s.Score, s.Medal, t.Level from (select * from tracks where MusicID = %s) as t left outer join (select * from score where UID = %s and MusicID = %s and UpCount = %s) as s on t.Difficulty = s.Difficulty order by s.Difficulty', (musicid, self.UID, musicid, self.count))
         result = self.con.cur.fetchall()
         return result
-    
+
     def get_scoredata(self):
         self.init_musiclist()
         return [(music, self.get_score(music[0])) for music in self.musiclist]
